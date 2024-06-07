@@ -76,15 +76,9 @@ endmodule
 
 
 
-module edge_trigger_DFF(input d, input clk, output q, output q_);   
+module edge_trigger_DFF(input d, input clk, input resetn, output q, output q_);   
     
-    edge_trigger_JKFF DFF (d, ~d, clk, 1, q, q_);
-
-endmodule
-
-module edge_trigger_DFFp(input d, input clk, output q, output q_);   
-    
-    edge_trigger_JKFFp DFFp (d, ~d, clk, 1, q, q_);
+    edge_trigger_JKFF DFF (d, ~d, clk, resetn, q, q_);
 
 endmodule
 
