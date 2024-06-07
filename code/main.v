@@ -97,26 +97,25 @@ module baw_main(
     assign p2_handcard_isblack = p2_handcard[0];
 
     wire [8:0] p1_card_;
-    assign p1_card_[0] = ~(p1_card[0] * cardselect[0]);
-    assign p1_card_[1] = ~(p1_card[1] & cardselect[1]);
-    assign p1_card_[2] = ~(p1_card[2] & cardselect[2]);
-    assign p1_card_[3] = ~(p1_card[3] & cardselect[3]);
-    assign p1_card_[4] = ~(p1_card[4] & cardselect[4]);
-    assign p1_card_[5] = ~(p1_card[5] & cardselect[5]);
-    assign p1_card_[6] = ~(p1_card[6] & cardselect[6]);
-    assign p1_card_[7] = ~(p1_card[7] & cardselect[7]);
-    assign p1_card_[8] = ~(p1_card[8] & cardselect[8]);
+    assign p1_card_[0] = p1_card[0] & ~cardselect[0];
+    assign p1_card_[1] = p1_card[1] & ~cardselect[1];
+    assign p1_card_[2] = p1_card[2] & ~cardselect[2];
+    assign p1_card_[3] = p1_card[3] & ~cardselect[3];
+    assign p1_card_[4] = p1_card[4] & ~cardselect[4];
+    assign p1_card_[5] = p1_card[5] & ~cardselect[5];
+    assign p1_card_[6] = p1_card[6] & ~cardselect[6];
+    assign p1_card_[7] = p1_card[7] & ~cardselect[7];
+    assign p1_card_[8] = p1_card[8] & ~cardselect[8];
     wire [8:0] p2_card_;
-    assign p2_card_[0] = ~(p2_card[0] & cardselect[0]);
-    assign p2_card_[1] = ~(p2_card[1] & cardselect[1]);
-    assign p2_card_[2] = ~(p2_card[2] & cardselect[2]);
-    assign p2_card_[3] = ~(p2_card[3] & cardselect[3]);
-    assign p2_card_[4] = ~(p2_card[4] & cardselect[4]);
-    assign p2_card_[5] = ~(p2_card[5] & cardselect[5]);
-    assign p2_card_[6] = ~(p2_card[6] & cardselect[6]);
-    assign p2_card_[7] = ~(p2_card[7] & cardselect[7]);
-    assign p2_card_[8] = ~(p2_card[8] & cardselect[8]);
-    assign p2_card_ = p2_card - p2_handcard;
+    assign p2_card_[0] = p2_card[0] & ~cardselect[0];
+    assign p2_card_[1] = p2_card[1] & ~cardselect[1];
+    assign p2_card_[2] = p2_card[2] & ~cardselect[2];
+    assign p2_card_[3] = p2_card[3] & ~cardselect[3];
+    assign p2_card_[4] = p2_card[4] & ~cardselect[4];
+    assign p2_card_[5] = p2_card[5] & ~cardselect[5];
+    assign p2_card_[6] = p2_card[6] & ~cardselect[6];
+    assign p2_card_[7] = p2_card[7] & ~cardselect[7];
+    assign p2_card_[8] = p2_card[8] & ~cardselect[8];
     
     // switch handcard input
     always @(posedge clk) begin
