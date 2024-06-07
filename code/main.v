@@ -107,12 +107,12 @@ module baw_main(
             p1_turn: begin 
                 cardselect <= sw[8:0]; // cardselect
                 p1_handcard <= handcard_input;
-                p1_card <= p1_card_;
+                
             end
             p2_turn: begin
                 cardselect <= sw[8:0]; 
                 p2_handcard <= handcard_input;
-                p2_card <= p2_card_;
+                
             end
             default : cardselect <= 9'b0; // ?��?��?��?
         endcase
@@ -176,20 +176,26 @@ module baw_main(
                     state <= matchresult_print;
                 else if(btnLeft)
                     state <= p1_turn;
+                    
                 else if(btnRight)
                     state <= p2_turn;
                 else if(btnBottom)
                     state <= init;
             end
+            
             p1_turn: begin // p1_turn
-                if(btnTop)
+                if(btnTop) begin
                     state <= bawp;
+                    p1_card <= p1_card_;
+                end
                 else if(btnBottom)
                     state <= init;
             end
             p2_turn: begin // p2_turn
-                if(btnTop)
+                if(btnTop) begin
                     state <= bawp;
+                    p2_card <= p2_card_;
+                end
                 else if(btnBottom)
                     state <= init;
             end
