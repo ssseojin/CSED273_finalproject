@@ -13,8 +13,8 @@ module baw_main(
     btnRight,
     input [0:15] sw,
     output [0:3] ssSel,
-    output [0:7] ssDisp,
-    output reg[0:15] led
+    output [7:0] ssDisp,
+    output reg[15:0] led
 );
 
     //parameter
@@ -103,10 +103,10 @@ module baw_main(
                 //led?�� ?��?���? ?���? ?��?��
             end
             p1_turn: begin
-                led[0:8] = p1_card[8:0]; // p1_card 출력
+                led[8:0] = p1_card[8:0]; // p1_card 출력
             end
             p2_turn: begin
-                led[0:8] = p2_card[8:0]; // p2_card 출력
+                led[8:0] = p2_card[8:0]; // p2_card 출력
             end
         endcase
     end
@@ -125,7 +125,7 @@ module baw_main(
                     state <= rasp;
             end
             rasp: begin // Round and Score print state
-                if(btnCenter)
+                if(btnTop)
                     state <= bawp;
                 else if(btnBottom)
                     state <= init;
@@ -141,21 +141,21 @@ module baw_main(
                     state <= init;
             end
             p1_turn: begin // p1_turn
-                if(btnLeft)
+                if(btnTop)
                     state <= bawp;
                 else if(btnBottom)
                     state <= init;
             end
             p2_turn: begin // p2_turn
-                if(btnRight)
+                if(btnTop)
                     state <= bawp;
                 else if(btnBottom)
                     state <= init;
             end
             matchresult_print: begin
-                if(btnCenter & finish == 1) // 게임 끝났을때 결과출력 state로
+                if(btnTop & finish == 1) // 게임 끝났을때 결과출력 state로
                     state <= matchresult_print;
-                else if(btnCenter & finish == 0) // 게임 안끝났을때 Round and Score Print state로
+                else if(btnTop & finish == 0) // 게임 안끝났을때 Round and Score Print state로
                     state <= rasp;
                 else if(btnBottom)
                     state <= init;
