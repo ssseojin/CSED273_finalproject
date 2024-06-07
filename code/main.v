@@ -1,8 +1,8 @@
 `timescale 1ns / 1ps
 
-//FSM always�? ?��?��..?
+//FSM always�?? ?��?��..?
 //segment출력
-//input output constraint만들�?
+//input output constraint만들�??
 
 module baw_main(
     input clk,
@@ -89,7 +89,7 @@ module baw_main(
     // handcard handcard2(handcard_input, handout_p2_pulse, reset_n, p2_handcard);
     // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
     
-    //?��카드 ?��백여�? + (카드 ?��?���? ?���??)
+    //?��카드 ?��백여�?? + (카드 ?��?���?? ?���???)
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
 
@@ -152,9 +152,9 @@ module baw_main(
     always @(posedge clk) begin
         case(state)
             bawp: begin
-                led[13] = p1_handcard_isblack; // ?��백여�? 출력
+                led[13] = p1_handcard_isblack; // ?��백여�?? 출력
                 led[15] = p2_handcard_isblack;
-                //led?�� ?��?���? ?���? ?��?��
+                //led?�� ?��?���?? ?���?? ?��?��
             end
             p1_turn: begin
                 led[8:0] = p1_card[8:0]; // p1_card 출력
@@ -176,56 +176,63 @@ module baw_main(
 
     //FSM
     always @(posedge clk) begin // * btnbottom 구현
-    case(state)
-        init: begin // init state
-            if (btnCenter)
-                state <= rasp;
-        end
-        rasp: begin // Round and Score print state
-            if (btnTop)
-                state <= bawp;
-            else if (btnBottom)
-                state <= init;
-        end
-        bawp: begin // Black and White print state
-            if (btnCenter)
-                state <= matchresult_print;
-            else if (btnLeft)
-                state <= p1_turn;
-            else if (btnRight)
-                state <= p2_turn;
-            else if (btnBottom)
-                state <= init;
-        end
-        p1_turn: begin // p1_turn
-            if (btnTop) begin
-                state <= bawp;
-                p1_card <= p1_card_;
-            end
-            else if (btnBottom)
-                state <= init;
-        end
-        p2_turn: begin // p2_turn
-            if (btnTop) begin
-                state <= bawp;
-                p2_card <= p2_card_;
-            end
-            else if (btnBottom)
-                state <= init;
-        end
-        matchresult_print: begin
-            if (btnTop) begin
-                if (finish == 1) // 게임 끝났을때 결과출력 state로
-                    state <= gameresult_print;
-                else if (finish == 0) // 게임 안끝났을때 Round and Score Print state로
+        case(state)
+            init: begin // init state
+                if(btnCenter) begin
                     state <= rasp;
+                    p1_card <= 9'b111111111;
+                    p2_card <= 9'b111111111;
+                end
             end
-            else if (btnBottom)
-                state <= init;
-        end
-        gameresult_print: begin // 게임 끝일 때
-            if (btnBottom)
-                state <= init;
-        end
-    endcase
-end
+            rasp: begin // Round and Score print state
+                if(btnTop)
+                    state <= bawp;
+                else if(btnBottom)
+                    state <= init;
+            end
+            bawp: begin // Black and White print state
+                if(btnCenter)
+                    state <= matchresult_print;
+                else if(btnLeft)
+                    state <= p1_turn;
+                    
+                else if(btnRight)
+                    state <= p2_turn;
+                else if(btnBottom)
+                    state <= init;
+            end
+            
+            p1_turn: begin // p1_turn
+                if(btnTop) begin
+                    state <= bawp;
+                    p1_card <= p1_card_;
+                end
+                else if(btnBottom)
+                    state <= init;
+            end
+            p2_turn: begin // p2_turn
+                if(btnTop) begin
+                    state <= bawp;
+                    p2_card <= p2_card_;
+                end
+                else if(btnBottom)
+                    state <= init;
+            end
+            matchresult_print: begin
+                if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�?
+                    if(finish == 1)
+                        state <= gameresult_print;
+                    else if(finish == 0)
+                        state <= rasp;
+                end
+                else if(btnBottom)
+                    state <= init;
+            end
+            gameresult_print: // 게임 ?��?�� ?��
+                if(btnBottom)
+                    state <= init;
+        endcase
+    end
+
+
+endmodule

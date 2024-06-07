@@ -1,28 +1,28 @@
-// ë¼ìš´ë“œ ëë‚˜ê³  matchresultë‘ í´ëŸ­ ì…ë ¥ë˜ë©´
-// round counter, win counter, lose counter ì—…ë°ì´íŠ¸
+// ?¼?š´?“œ ??‚˜ê³? matchresult?‘ ?´?Ÿ­ ?…? ¥?˜ë©?
+// round counter, win counter, lose counter ?—…?°?´?Š¸
 
-// Lab6ì— counter ëª¨ë“ˆ ì“°ê¸°
+// Lab6?— counter ëª¨ë“ˆ ?“°ê¸?
 
-// roundëŠ” ë¼ìš´ë“œ ëë‚ ë•Œë§ˆë‹¤ 1 ì¶”ê°€
-// p1 ìŠ¹ì´ë©´ win counter 1 ì¶”ê°€
-// p2 ìŠ¹ì´ë©´ lose counter 1 ì¶”ê°€
+// round?Š” ?¼?š´?“œ ??‚ ?•Œë§ˆë‹¤ 1 ì¶”ê?
+// p1 ?Š¹?´ë©? win counter 1 ì¶”ê?
+// p2 ?Š¹?´ë©? lose counter 1 ì¶”ê?
 
 module scoreupdate(
     input [1:0] matchresult,
     input clk,
     input resetn,
-    output round,
-    output win,
-    output lose
+    output [3:0] round,
+    output [3:0] win,
+    output [3:0] lose
 );
     wire win_clk, lose_clk;
 
-    assign win_clk = matchresult[0] & ~matchresult[1] & clk; // 10 ìŠ¹
-    assign lose_clk = matchresult[0] & matchresult[1] & clk; // 11 íŒ¨
+    assign win_clk = ~matchresult[0] & matchresult[1] & clk; // 10 ?Š¹
+    assign lose_clk = matchresult[0] & matchresult[1] & clk; // 11 ?Œ¨
 
-    counter round(clk, resetn, round);
-    counter win(win_clk, resetn, win);
-    counter lose(lose_clk, resetn, lose);
+    counter round2(clk, resetn, round);
+    counter win2(win_clk, resetn, win);
+    counter lose2(lose_clk, resetn, lose);
 
 endmodule
 
@@ -41,8 +41,8 @@ module edge_trigger_JKFF(input j, input k, input clk, input resetn, output reg q
       q_ = ~q;
     end
        
-    always @(posedge clk or negedge resetn) begin
-        if(!resetn) begin
+    always @(negedge clk or posedge resetn) begin
+        if(resetn) begin
             q = 0;
             q_ = 1;
         end
@@ -61,8 +61,8 @@ module edge_trigger_JKFFp(input j, input k, input clk, input resetn, output reg 
       q_ = ~q;
     end
        
-    always @(posedge clk or negedge resetn) begin
-        if(!resetn) begin
+    always @(negedge clk or posedge resetn) begin
+        if(resetn) begin
             q = 1;
             q_ = 0;
         end

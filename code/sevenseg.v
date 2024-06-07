@@ -20,7 +20,7 @@ module bcd_to_7seg (
       4'b1011: seg = 8'b10100001;  // D
       4'b1100: seg = 8'b10101111;  // R
       4'b1101: seg = 8'b10001000;  // A
-      4'b1110: seg = 8'b10010101;  // W
+      4'b1110: seg = 8'b01101011;  // W
       4'b1111: seg = 8'b11111111;  // off
       default: seg = 8'b11111111;
     endcase
