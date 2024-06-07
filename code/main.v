@@ -128,7 +128,10 @@ module baw_main(
             p2_turn: begin
                 cardselect <= sw[8:0]; 
                 p2_handcard <= handcard_input;
-                
+            end
+            matchresult: begin
+                p1_handcard <= 9'b0;
+                p2_handcard <= 9'b0;
             end
             default : cardselect <= 9'b0; // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?
         endcase
@@ -152,8 +155,11 @@ module baw_main(
     always @(posedge clk) begin
         case(state)
             bawp: begin
+                led[12] = ~p1_handcard_isblack;
                 led[13] = p1_handcard_isblack; // ?ï¿½ï¿½ë°±ì—¬ï¿?? ì¶œë ¥
+                led[14] = ~p2_handcard_isblack;
                 led[15] = p2_handcard_isblack;
+                led[11:0] = 12'b0;
                 //led?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿?? ?ï¿½ï¿½ï¿?? ?ï¿½ï¿½?ï¿½ï¿½
             end
             p1_turn: begin
@@ -163,7 +169,9 @@ module baw_main(
                 led[8:0] = p2_card[8:0]; // p2_card ì¶œë ¥
             end
             default: begin
-                led[15:0] = 16'b0000000000000000;
+                led[15:14] = matchresult; 
+                led[13:12] = gameresult;
+                led[11] = finish;
             end
         endcase
     end
@@ -220,17 +228,19 @@ module baw_main(
             end
             matchresult_print: begin
                 if(btnLeft) begin// ê²Œìž„ ??‚¬?„?•Œ ê²°ê³¼ì¶œë ¥ stateë¡?
+                    
                     if(finish == 1)
                         state <= gameresult_print;
-                    else if(finish == 0)
+                    else
                         state <= rasp;
                 end
                 else if(btnBottom)
                     state <= init;
             end
-            gameresult_print: // ê²Œìž„ ??¼ ?•Œ
+            gameresult_print:begin // ê²Œìž„ ??¼ ?•Œ
                 if(btnBottom)
                     state <= init;
+            end
         endcase
     end
 

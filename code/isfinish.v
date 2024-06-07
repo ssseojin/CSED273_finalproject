@@ -15,7 +15,7 @@ module isfinish(
     assign nine[1]=0;
     assign nine[0]=1;
     // win > lose + (9 - round)ë©? p1?Š¹ ?™•? •
-    
+    /*
     wire [3:0]l9r, _9r, w9r, wr;
     wire carry1, carry2;
     wire [1:0]checkwin, checklose;
@@ -31,9 +31,11 @@ module isfinish(
     // ??¸ê°?
     assign fin=(checkwin[1]&~checkwin[0])|(checklose[1]&~checklose[0])|(round[3]&~round[2]&~round[1]&round[0]);
     //?Š¹?ì¶œë ¥
+    */
+    assign fin = round[3] & ~round[2] & ~round[1] & ~round[0];
     magnitude_comparator compare3(win,lose, winner);//win?´ ?¬ë©? 10?œ¼ë¡? 1?Š¹ë¦?//loseê°? ?¬ë©? 11ë¡? 2?Š¹ë¦?//ë¬´ìŠ¹ë¶?ë©? 01
-    assign printwinner[1]=fin&winner[1];
-    assign printwinner[0]=fin&winner[0];
+    assign printwinner[1]=winner[1];
+    assign printwinner[0]=winner[0];
     // arithmetic operator ?“°ë©? ?•ˆ?˜?‹ˆê¹? Lab5?— 4-bit adder ëª¨ë“ˆ + magnitude comparator ëª¨ë“ˆ ?“°ê¸?
 
 endmodule
