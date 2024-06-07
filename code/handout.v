@@ -15,7 +15,7 @@ module handout(
     wire [3:0] handcard_input;
 
     encoder encoder0(i, handcard_input);
-    handcard handcard0(handcard_input, handout_pulse, handcard);
+    handcard handcard0(handcard_input, handout_pulse, resetn, handcard);
     card card0(cardselect, handout_pulse, reset_n, card);
 
 endmodule
@@ -56,13 +56,14 @@ endmodule
 module handcard(
     input [3:0] d,
     input clk,
+    input resetn,
     output [3:0] handcard
 );
     wire [3:0] q, q_;
-    edge_trigger_DFF handcard0(d[0], clk, q[0], q_[0]);
-    edge_trigger_DFF handcard1(d[1], clk, q[1], q_[1]);
-    edge_trigger_DFF handcard2(d[2], clk, q[2], q_[2]);
-    edge_trigger_DFF handcard3(d[3], clk, q[3], q_[3]);
+    edge_trigger_DFF handcard0(d[0], clk, resetn, q[0], q_[0]);
+    edge_trigger_DFF handcard1(d[1], clk, resetn, q[1], q_[1]);
+    edge_trigger_DFF handcard2(d[2], clk, resetn, q[2], q_[2]);
+    edge_trigger_DFF handcard3(d[3], clk, resetn, q[3], q_[3]);
     
     assign handcard = q;
 
