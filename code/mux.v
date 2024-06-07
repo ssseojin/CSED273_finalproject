@@ -111,7 +111,7 @@ assign data2={p1_black,p1_white,p2_black,p2_white};//bawp
 assign data3=16'b0001111111111111;//p1 turn
 assign data4=16'b0010111111111111;
 assign data5= ~matchresult[1]&~matchresult[0]&16'b1111111111111111 | ~matchresult[1]&matchresult[0]&16'b1011110011011110 | matchresult[1]&~matchresult[0]&16'b0001111000011010 | matchresult[1]&matchresult[0]&16'b0010111000011010;
-assign data6= ~gameresult[1]&~gameresult[0]&16'b1111111111111111 | ~gameresult[1]&~gameresult[0]&16'b1011110011111111 | gameresult[1]&~gameresult[0]&16'b0001111011111111 | gameresult[1]&gameresult[0]&16'b0010111011111111;
+assign data6= ~gameresult[1]&~gameresult[0]&16'b1111111111111111 | ~gameresult[1]&gameresult[0]&16'b1011110011111111 | gameresult[1]&~gameresult[0]&16'b0001111011111111 | gameresult[1]&gameresult[0]&16'b0010111011111111;
 
 assign out[0]= ~state[2]&~state[1]&~state[0]&data0[0] | ~state[2]&~state[1]&state[0]&data1[0] | ~state[2]&state[1]&~state[0]&data2[0] | ~state[2]&state[1]&state[0]&data3[0] | state[2]&~state[1]&~state[0]&data4[0] | state[2]&~state[1]&state[0]&data5[0] | state[2]&state[1]&~state[0]&data6[0];
 assign out[1]= ~state[2]&~state[1]&~state[0]&data0[1] | ~state[2]&~state[1]&state[0]&data1[1] | ~state[2]&state[1]&~state[0]&data2[1] | ~state[2]&state[1]&state[0]&data3[1] | state[2]&~state[1]&~state[0]&data4[1] | state[2]&~state[1]&state[0]&data5[1] | state[2]&state[1]&~state[0]&data6[1];
