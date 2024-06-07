@@ -16,11 +16,11 @@ module bcd_to_7seg (
       4'b0111: seg = 8'b11111000;  // 7
       4'b1000: seg = 8'b10000000;  // 8
       4'b1001: seg = 8'b10010000;  // 9
-      4'b1010: seg = 8'b01010100;  // N
-      4'b1011: seg = 8'b00111111;  // D
-      4'b1100: seg = 8'b01010000;  // R
-      4'b1101: seg = 8'b01110111;  // A
-      4'b1110: seg = 8'b01111110;  // W
+      4'b1010: seg = 8'b10101011;  // N
+      4'b1011: seg = 8'b10100001;  // D
+      4'b1100: seg = 8'b10101111;  // R
+      4'b1101: seg = 8'b10001000;  // A
+      4'b1110: seg = 8'b01101011;  // W
       4'b1111: seg = 8'b11111111;  // off
       default: seg = 8'b11111111;
     endcase
@@ -88,10 +88,10 @@ endmodule
 
 
 //output sevenseg
-//init state -> init 출력
-//rasp state -> round win lose 출력
-//bawp state -> p1black p1white p2black p2white 출력, led?�� ?��?���??���?, ?��백여�? 출력
-//p1_turn state -> player 출력, led?�� p1_card 출력
+//init state -> init ì¶œë ¥
+//rasp state -> round win lose ì¶œë ¥
+//bawp state -> p1black p1white p2black p2white ì¶œë ¥, led?— ?ƒˆ?Š”ì§??—¬ë¶?, ?‘ë°±ì—¬ë¶? ì¶œë ¥
+//p1_turn state -> player ì¶œë ¥, led?— p1_card ì¶œë ¥
 //p2_turn state
-//matchresult state -> matchresult 출력
-//gameresult state -> gameresult 출력
+//matchresult state -> matchresult ì¶œë ¥
+//gameresult state -> gameresult ì¶œë ¥
