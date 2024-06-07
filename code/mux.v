@@ -103,15 +103,50 @@ module whattoprint(
     input [1:0]gameresult,matchresult,
     output [15:0]out
 );
+
 wire [15:0] data0,data1,data2,data3,data4,data5,data6,data7;
 
 assign data0=16'b0001101000011111; //init
-assign data1={round,4'b1111,win,lose};//rasp
-assign data2={p1_black,p1_white,p2_black,p2_white};//bawp
+assign data1={round,1111,win,lose};//rasp
+assign data2={p1balck,p1white,p2black,p2white};//bawp
 assign data3=16'b0001111111111111;//p1 turn
 assign data4=16'b0010111111111111;
-assign data5= ~matchresult[1]&~matchresult[0]&16'b1111111111111111 | ~matchresult[1]&matchresult[0]&16'b1011110011011110 | matchresult[1]&~matchresult[0]&16'b0001111000011010 | matchresult[1]&matchresult[0]&16'b0010111000011010;
-assign data6= ~gameresult[1]&~gameresult[0]&16'b1111111111111111 | ~gameresult[1]&~gameresult[0]&16'b1011110011111111 | gameresult[1]&~gameresult[0]&16'b0001111011111111 | gameresult[1]&gameresult[0]&16'b0010111011111111;
+
+assign data5[0]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+assign data5[1]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&0 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+assign data5[2]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&1;
+assign data5[3]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&1 | matchresult[1]&matchresult[0]&0;
+assign data5[4]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&1 | matchresult[1]&matchresult[0]&1;
+assign data5[5]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&1 | matchresult[1]&matchresult[0]&1;
+assign data5[6]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&0 | matchresult[1]&~matchresult[0]&1 | matchresult[1]&matchresult[0]&1;
+assign data5[7]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&0 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+assign data5[8]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+assign data5[9]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+assign data5[10]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&0 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+assign data5[11]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&1 | matchresult[1]&matchresult[0]&1;
+assign data5[12]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&1 | matchresult[1]&matchresult[0]&1;
+assign data5[13]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+assign data5[14]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&1 | matchresult[1]&~matchresult[0]&1 | matchresult[1]&matchresult[0]&1;
+assign data5[15]= ~matchresult[1]&~matchresult[0]&1 | ~matchresult[1]&matchresult[0]&0 | matchresult[1]&~matchresult[0]&0 | matchresult[1]&matchresult[0]&0;
+
+
+assign data6[0]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&0 | gameresult[1]&gameresult[0]&0;
+assign data6[1]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&0 | gameresult[1]&~gameresult[0]&0 | gameresult[1]&gameresult[0]&0;
+assign data6[2]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&0 | gameresult[1]&gameresult[0]&1;
+assign data6[3]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&0;
+assign data6[4]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[5]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[6]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&0 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[7]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&0 | gameresult[1]&~gameresult[0]&0 | gameresult[1]&gameresult[0]&0;
+assign data6[8]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[9]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[10]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[11]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[12]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[13]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[14]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+assign data6[15]= ~gameresult[1]&~gameresult[0]&1 | ~gameresult[1]&~gameresult[0]&1 | gameresult[1]&~gameresult[0]&1 | gameresult[1]&gameresult[0]&1;
+
 
 assign out[0]= ~state[2]&~state[1]&~state[0]&data0[0] | ~state[2]&~state[1]&state[0]&data1[0] | ~state[2]&state[1]&~state[0]&data2[0] | ~state[2]&state[1]&state[0]&data3[0] | state[2]&~state[1]&~state[0]&data4[0] | state[2]&~state[1]&state[0]&data5[0] | state[2]&state[1]&~state[0]&data6[0];
 assign out[1]= ~state[2]&~state[1]&~state[0]&data0[1] | ~state[2]&~state[1]&state[0]&data1[1] | ~state[2]&state[1]&~state[0]&data2[1] | ~state[2]&state[1]&state[0]&data3[1] | state[2]&~state[1]&~state[0]&data4[1] | state[2]&~state[1]&state[0]&data5[1] | state[2]&state[1]&~state[0]&data6[1];
@@ -129,5 +164,6 @@ assign out[12]= ~state[2]&~state[1]&~state[0]&data0[12] | ~state[2]&~state[1]&st
 assign out[13]= ~state[2]&~state[1]&~state[0]&data0[13] | ~state[2]&~state[1]&state[0]&data1[13] | ~state[2]&state[1]&~state[0]&data2[13] | ~state[2]&state[1]&state[0]&data3[13] | state[2]&~state[1]&~state[0]&data4[13] | state[2]&~state[1]&state[0]&data5[13] | state[2]&state[1]&~state[0]&data6[13];
 assign out[14]= ~state[2]&~state[1]&~state[0]&data0[14] | ~state[2]&~state[1]&state[0]&data1[14] | ~state[2]&state[1]&~state[0]&data2[14] | ~state[2]&state[1]&state[0]&data3[14] | state[2]&~state[1]&~state[0]&data4[14] | state[2]&~state[1]&state[0]&data5[14] | state[2]&state[1]&~state[0]&data6[14];
 assign out[15]= ~state[2]&~state[1]&~state[0]&data0[15] | ~state[2]&~state[1]&state[0]&data1[15] | ~state[2]&state[1]&~state[0]&data2[15] | ~state[2]&state[1]&state[0]&data3[15] | state[2]&~state[1]&~state[0]&data4[15] | state[2]&~state[1]&state[0]&data5[15] | state[2]&state[1]&~state[0]&data6[15];
+
 
 endmodule
