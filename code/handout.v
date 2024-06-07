@@ -11,7 +11,23 @@ module handout(
     // handcard D FF로 저장
     // card T FF로 저장 -> 초기화를 어떻게하지 ..? reset이 다르게 되는 버전의 FF를 만들어줘야함
     wire [15:0] i;
-    assign i = {7'b0, cardselect};
+    assign i[0] = cardselect[0];
+    assign i[1] = cardselect[1];
+    assign i[2] = cardselect[2];
+    assign i[3] = cardselect[3];
+    assign i[4] = cardselect[4];
+    assign i[5] = cardselect[5];
+    assign i[6] = cardselect[6];
+    assign i[7] = cardselect[7];
+    assign i[8] = cardselect[8];
+    assign i[9] = 0;
+    assign i[10] = 0;
+    assign i[11] = 0;
+    assign i[12] = 0;
+    assign i[13] = 0;
+    assign i[14] = 0;
+    assign i[15] = 0;
+
     wire [3:0] handcard_input;
 
     encoder encoder0(i, handcard_input);
