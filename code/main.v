@@ -176,58 +176,56 @@ module baw_main(
 
     //FSM
     always @(posedge clk) begin // * btnbottom 구현
-        case(state)
-            init: begin // init state
-                if(btnCenter)
+    case(state)
+        init: begin // init state
+            if (btnCenter)
+                state <= rasp;
+        end
+        rasp: begin // Round and Score print state
+            if (btnTop)
+                state <= bawp;
+            else if (btnBottom)
+                state <= init;
+        end
+        bawp: begin // Black and White print state
+            if (btnCenter)
+                state <= matchresult_print;
+            else if (btnLeft)
+                state <= p1_turn;
+            else if (btnRight)
+                state <= p2_turn;
+            else if (btnBottom)
+                state <= init;
+        end
+        p1_turn: begin // p1_turn
+            if (btnTop) begin
+                state <= bawp;
+                p1_card <= p1_card_;
+            end
+            else if (btnBottom)
+                state <= init;
+        end
+        p2_turn: begin // p2_turn
+            if (btnTop) begin
+                state <= bawp;
+                p2_card <= p2_card_;
+            end
+            else if (btnBottom)
+                state <= init;
+        end
+        matchresult_print: begin
+            if (btnTop) begin
+                if (finish == 1) // 게임 끝났을때 결과출력 state로
+                    state <= gameresult_print;
+                else if (finish == 0) // 게임 안끝났을때 Round and Score Print state로
                     state <= rasp;
             end
-            rasp: begin // Round and Score print state
-                if(btnTop)
-                    state <= bawp;
-                else if(btnBottom)
-                    state <= init;
-            end
-            bawp: begin // Black and White print state
-                if(btnCenter)
-                    state <= matchresult_print;
-                else if(btnLeft)
-                    state <= p1_turn;
-                    
-                else if(btnRight)
-                    state <= p2_turn;
-                else if(btnBottom)
-                    state <= init;
-            end
-            
-            p1_turn: begin // p1_turn
-                if(btnTop) begin
-                    state <= bawp;
-                    p1_card <= p1_card_;
-                end
-                else if(btnBottom)
-                    state <= init;
-            end
-            p2_turn: begin // p2_turn
-                if(btnTop) begin
-                    state <= bawp;
-                    p2_card <= p2_card_;
-                end
-                else if(btnBottom)
-                    state <= init;
-            end
-            matchresult_print: begin
-                if(btnTop & finish == 1) // 게임 끝났을때 결과출력 state로
-                    state <= matchresult_print;
-                else if(btnTop & finish == 0) // 게임 안끝났을때 Round and Score Print state로
-                    state <= rasp;
-                else if(btnBottom)
-                    state <= init;
-            end
-            gameresult_print: // 게임 끝일 때
-                if(btnBottom)
-                    state <= init;
-        endcase
-    end
-
-
-endmodule
+            else if (btnBottom)
+                state <= init;
+        end
+        gameresult_print: begin // 게임 끝일 때
+            if (btnBottom)
+                state <= init;
+        end
+    endcase
+end
