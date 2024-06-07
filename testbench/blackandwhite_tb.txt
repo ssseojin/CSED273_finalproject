@@ -1,0 +1,55 @@
+`timescale 1ns / 1ps
+
+module blackandwhite_tb;
+
+    reg [9:0] p_card;
+    wire [2:0] p_black;
+    wire [2:0] p_white;
+
+    // 인스턴스화
+    blackandwhite uut (
+        .p_card(p_card),
+        .p_black(p_black),
+        .p_white(p_white)
+    );
+
+    initial begin
+        // 테스트 케이스: 입력 값을 변경하고 결과를 모니터링
+        $monitor("time=%0d, p_card=%b, p_black=%b, p_white=%b", $time, p_card, p_black, p_white);
+
+        // 각 테스트 벡터에 대해 모듈 호출
+        p_card = 10'b0000000000; #10;  // 0 흑카드, 0 백카드 (p_black=000, p_white=000)
+        p_card = 10'b1111111111; #10;  // 5 흑카드, 5 백카드 (p_black=101, p_white=101)
+        p_card = 10'b1010101010; #10;  // 3 흑카드, 2 백카드 (p_black=011, p_white=010)
+
+        // 시뮬레이션 종료
+        $finish;
+    end
+
+endmodule
+
+module count_tb;
+
+    reg [4:0] in;
+    wire [2:0] count;
+
+    // 인스턴스화
+    count uut (
+        .in(in),
+        .count(count)
+    );
+
+    initial begin
+        // 테스트 케이스: 입력 값을 변경하고 결과를 모니터링
+        $monitor("time=%0d, in=%b, count=%b", $time, in, count);
+
+        // 각 테스트 벡터에 대해 모듈 호출
+        in = 5'b00000; #10;  // 0개 (count=000)
+        in = 5'b11111; #10;  // 5개 (count=101)
+        in = 5'b10101; #10;  // 3개 (count=011)
+
+        // 시뮬레이션 종료
+        $finish;
+    end
+
+endmodule

@@ -1,0 +1,50 @@
+// compare_tb //by gpt
+
+module tb_compare();
+    reg [3:0] p1_handcard;
+    reg [3:0] p2_handcard;
+    wire [1:0] matchresult;
+
+    compare uut (
+        .p1_handcard(p1_handcard),
+        .p2_handcard(p2_handcard),
+        .matchresult(matchresult)
+    );
+
+    initial begin
+        // Test case 1: p1_handcard = 4'b0001, p2_handcard = 4'b0010
+        p1_handcard = 4'b0001;
+        p2_handcard = 4'b0010;
+        #10;
+        $display("p1_handcard = %b, p2_handcard = %b, matchresult = %b", p1_handcard, p2_handcard, matchresult);
+        // Expected output: matchresult = 11 (p2 승)
+
+        // Test case 2: p1_handcard = 4'b0100, p2_handcard = 4'b0011
+        p1_handcard = 4'b0100;
+        p2_handcard = 4'b0011;
+        #10;
+        $display("p1_handcard = %b, p2_handcard = %b, matchresult = %b", p1_handcard, p2_handcard, matchresult);
+        // Expected output: matchresult = 10 (p1 승)
+
+        // Test case 3: p1_handcard = 4'b0101, p2_handcard = 4'b0101
+        p1_handcard = 4'b0101;
+        p2_handcard = 4'b0101;
+        #10;
+        $display("p1_handcard = %b, p2_handcard = %b, matchresult = %b", p1_handcard, p2_handcard, matchresult);
+        // Expected output: matchresult = 01 (draw)
+
+        // Test case 4: p1_handcard = 4'b1111, p2_handcard = 4'b0000
+        p1_handcard = 4'b1111;
+        p2_handcard = 4'b0000;
+        #10;
+        $display("p1_handcard = %b, p2_handcard = %b, matchresult = %b", p1_handcard, p2_handcard, matchresult);
+        // Expected output: matchresult = 10 (p1 승)
+
+        // Test case 5: p1_handcard = 4'b1010, p2_handcard = 4'b1011
+        p1_handcard = 4'b1010;
+        p2_handcard = 4'b1011;
+        #10;
+        $display("p1_handcard = %b, p2_handcard = %b, matchresult = %b", p1_handcard, p2_handcard, matchresult);
+        // Expected output: matchresult = 11 (p2 승)
+    end
+endmodule
