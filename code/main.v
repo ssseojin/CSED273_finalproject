@@ -11,7 +11,7 @@ module baw_main(
     btnBottom,
     btnLeft,
     btnRight,
-    input [0:15] sw,
+    input [15:0] sw,
     output [0:3] ssSel,
     output [7:0] ssDisp,
     output reg[15:0] led
@@ -55,11 +55,38 @@ module baw_main(
 
     assign scoreupdate_pulse = state[2] & ~state[1] & state[0]; // 101
     assign handout_p1_pulse = ~state[2] & state[1] & state[0]; // 011
-    assign handout_p2_pulse = state[2] & state[1] & state[0];// 100
+    assign handout_p2_pulse = state[2] & ~state[1] & ~state[0];// 100
     
     scoreupdate score(matchresult, scoreupdate_pulse, resetn, round, win, lose);
-    handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
-    handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
+    // handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
+    // handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
+
+    wire [3:0] handcard_input;
+    wire [15:0] i;
+
+    assign i[0] = cardselect[0];
+    assign i[1] = cardselect[1];
+    assign i[2] = cardselect[2];
+    assign i[3] = cardselect[3];
+    assign i[4] = cardselect[4];
+    assign i[5] = cardselect[5];
+    assign i[6] = cardselect[6];
+    assign i[7] = cardselect[7];
+    assign i[8] = cardselect[8];
+    assign i[9] = 0;
+    assign i[10] = 0;
+    assign i[11] = 0;
+    assign i[12] = 0;
+    assign i[13] = 0;
+    assign i[14] = 0;
+    assign i[15] = 0;
+
+    encoder ec(i, handcard_input);
+    handcard handcard1(handcard_input, handout_p1_pulse, reset_n, p1_handcard);
+    card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
+    handcard handcard2(handcard_input, handout_p2_pulse, reset_n, p2_handcard);
+    card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
+    
 
 
     
@@ -74,8 +101,8 @@ module baw_main(
     // switch handcard input
     always @(posedge clk) begin
         case (state)
-            p1_turn: cardselect <= sw[0:8]; // cardselect
-            p2_turn: cardselect <= sw[0:8]; 
+            p1_turn: cardselect <= sw[8:0]; // cardselect
+            p2_turn: cardselect <= sw[8:0]; 
             default : cardselect <= 9'b0; // ?��?��?��?
         endcase
     end
@@ -107,6 +134,9 @@ module baw_main(
             end
             p2_turn: begin
                 led[8:0] = p2_card[8:0]; // p2_card 출력
+            end
+            default: begin
+                led[15:0] = 16'b0000000000000000;
             end
         endcase
     end
