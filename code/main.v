@@ -23,13 +23,14 @@ module baw_main(
     parameter p2_turn = 3'b100;
     parameter matchresult_print = 3'b101;
     parameter gameresult_print = 3'b110;
-
+    parameter temp = 3'b111;
+    
     //variable
     reg [2:0] state;
     reg [8:0] cardselect;
 
-    wire reset_n;
-    assign reset_n = (~state[2] & ~state[1] & ~state[0]);
+    wire resetn;
+    assign resetn = (~state[2] & ~state[1] & ~state[0]);
 
     reg [8:0] p1_card, p2_card;
     reg [3:0] p1_handcard, p2_handcard;
@@ -51,7 +52,7 @@ module baw_main(
     wire handout_p1_pulse;
     wire handout_p2_pulse;
 
-    assign scoreupdate_pulse = (state[2] & ~state[1] & state[0]) | reset_n; // 101
+    assign scoreupdate_pulse = (state[2] & ~state[1] & state[0]) | resetn; // 101
     assign handout_p1_pulse = ~(~state[2] & state[1] & state[0]); // 011
     assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
@@ -82,9 +83,9 @@ module baw_main(
     assign i[15] = 0;
 
     encoder ec(i, handcard_input);
-    // handcard handcard1(handcard_input, handout_p1_pulse, reset_n, p1_handcard);
+    // handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
     // card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
-    // handcard handcard2(handcard_input, handout_p2_pulse, reset_n, p2_handcard);
+    // handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
     // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
     
     //?��카드 ?��백여�??? + (카드 ?��?���??? ?���????)
@@ -169,7 +170,7 @@ module baw_main(
                 led[13:12] = gameresult;
                 led[11] = finish;
                 led[10] = scoreupdate_pulse;
-                led[9] = reset_n;
+                led[9] = resetn;
                 led[3:0] = p1_handcard;
                 led[7:4] = p2_handcard;
             end
@@ -233,11 +234,15 @@ module baw_main(
             end
             matchresult_print: begin
                 if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�??
-                    
-                    if(finish == 1)
+//                    state <= temp;
+
+                     if(finish == 1) begin
                         state <= gameresult_print;
-                    else
+                    end
+                    else begin
                         state <= rasp;
+                    end
+                    
                 end
                 else if(btnBottom)
                     state <= init;
@@ -246,6 +251,14 @@ module baw_main(
                 if(btnBottom)
                     state <= init;
             end
+//            temp: begin 
+//            if(finish == 1) begin
+//                        state <= gameresult_print;
+//            end
+//                    else begin
+//                        state <= rasp;
+//                    end
+//            end
         endcase
     end
 
