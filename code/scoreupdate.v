@@ -1,11 +1,11 @@
-// ?¼?š´?“œ ??‚˜ê³? matchresult?‘ ?´?Ÿ­ ?…? ¥?˜ë©?
-// round counter, win counter, lose counter ?—…?°?´?Š¸
+// ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿½? matchresult?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½?
+// round counter, win counter, lose counter ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
 
-// Lab6?— counter ëª¨ë“ˆ ?“°ê¸?
+// Lab6?ï¿½ï¿½ counter ëª¨ë“ˆ ?ï¿½ï¿½ï¿½?
 
-// round?Š” ?¼?š´?“œ ??‚ ?•Œë§ˆë‹¤ 1 ì¶”ê?
-// p1 ?Š¹?´ë©? win counter 1 ì¶”ê?
-// p2 ?Š¹?´ë©? lose counter 1 ì¶”ê?
+// round?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë§ˆë‹¤ 1 ì¶”ï¿½?
+// p1 ?ï¿½ï¿½?ï¿½ï¿½ï¿½? win counter 1 ì¶”ï¿½?
+// p2 ?ï¿½ï¿½?ï¿½ï¿½ï¿½? lose counter 1 ì¶”ï¿½?
 
 module scoreupdate(
     input [1:0] matchresult,
@@ -17,8 +17,8 @@ module scoreupdate(
 );
     wire win_clk, lose_clk;
 
-    assign win_clk = ~matchresult[0] & matchresult[1] & clk; // 10 ?Š¹
-    assign lose_clk = matchresult[0] & matchresult[1] & clk; // 11 ?Œ¨
+    assign win_clk = ~matchresult[0] & matchresult[1] & clk; // 10 ?ï¿½ï¿½
+    assign lose_clk = matchresult[0] & matchresult[1] & clk; // 11 ?ï¿½ï¿½
 
     counter round2(clk, resetn, round);
     counter win2(win_clk, resetn, win);
@@ -41,8 +41,8 @@ module edge_trigger_JKFF(input j, input k, input clk, input resetn, output reg q
       q_ = ~q;
     end
        
-    always @(negedge clk or posedge resetn) begin
-        if(resetn) begin
+    always @(posedge clk or negedge resetn) begin
+        if(!resetn) begin
             q = 0;
             q_ = 1;
         end
@@ -61,8 +61,8 @@ module edge_trigger_JKFFp(input j, input k, input clk, input resetn, output reg 
       q_ = ~q;
     end
        
-    always @(negedge clk or posedge resetn) begin
-        if(resetn) begin
+    always @(posedge clk or negedge resetn) begin
+        if(!resetn) begin
             q = 1;
             q_ = 0;
         end

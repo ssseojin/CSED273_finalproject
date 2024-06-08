@@ -1,8 +1,6 @@
 `timescale 1ns / 1ps
 
-//FSM alwaysï¿?? ?ï¿½ï¿½?ï¿½ï¿½..?
-//segmentì¶œë ¥
-//input output constraintë§Œë“¤ï¿??
+//0530
 
 module baw_main(
     input clk,
@@ -31,7 +29,7 @@ module baw_main(
     reg [8:0] cardselect;
 
     wire reset_n;
-    assign reset_n = ~state[2] & ~state[1] & ~state[0];
+    assign reset_n = ~(~state[2] & ~state[1] & ~state[0]);
 
     reg [8:0] p1_card, p2_card;
     reg [3:0] p1_handcard, p2_handcard;
@@ -53,9 +51,9 @@ module baw_main(
     wire handout_p1_pulse;
     wire handout_p2_pulse;
 
-    assign scoreupdate_pulse = state[2] & ~state[1] & state[0]; // 101
-    assign handout_p1_pulse = ~state[2] & state[1] & state[0]; // 011
-    assign handout_p2_pulse = state[2] & ~state[1] & ~state[0];// 100
+    assign scoreupdate_pulse = ~(state[2] & ~state[1] & state[0]); // 101
+    assign handout_p1_pulse = ~(~state[2] & state[1] & state[0]); // 011
+    assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
     scoreupdate score(matchresult, scoreupdate_pulse, resetn, round, win, lose);
 
@@ -89,7 +87,7 @@ module baw_main(
     // handcard handcard2(handcard_input, handout_p2_pulse, reset_n, p2_handcard);
     // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
     
-    //?ï¿½ï¿½ì¹´ë“œ ?ï¿½ï¿½ë°±ì—¬ï¿?? + (ì¹´ë“œ ?ï¿½ï¿½?ï¿½ï¿½ï¿?? ?ï¿½ï¿½ï¿???)
+    //?ï¿½ï¿½ì¹´ë“œ ?ï¿½ï¿½ë°±ì—¬ï¿½?? + (ì¹´ë“œ ?ï¿½ï¿½?ï¿½ï¿½ï¿½?? ?ï¿½ï¿½ï¿½???)
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
 
@@ -122,17 +120,15 @@ module baw_main(
         case (state)
             p1_turn: begin 
                 cardselect <= sw[8:0]; // cardselect
-                p1_handcard <= handcard_input;
                 
             end
             p2_turn: begin
                 cardselect <= sw[8:0]; 
-                p2_handcard <= handcard_input;
             end
-            matchresult: begin
-                p1_handcard <= 9'b0;
-                p2_handcard <= 9'b0;
-            end
+            // matchresult: begin
+            //     p1_handcard <= 9'b0;
+            //     p2_handcard <= 9'b0;
+            // end
             default : cardselect <= 9'b0; // ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?
         endcase
     end
@@ -156,11 +152,11 @@ module baw_main(
         case(state)
             bawp: begin
                 led[12] = ~p1_handcard_isblack;
-                led[13] = p1_handcard_isblack; // ?ï¿½ï¿½ë°±ì—¬ï¿?? ì¶œë ¥
+                led[13] = p1_handcard_isblack; // ?ï¿½ï¿½ë°±ì—¬ï¿½?? ì¶œë ¥
                 led[14] = ~p2_handcard_isblack;
                 led[15] = p2_handcard_isblack;
                 led[11:0] = 12'b0;
-                //led?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿?? ?ï¿½ï¿½ï¿?? ?ï¿½ï¿½?ï¿½ï¿½
+                //led?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿½?? ?ï¿½ï¿½ï¿½?? ?ï¿½ï¿½?ï¿½ï¿½
             end
             p1_turn: begin
                 led[8:0] = p1_card[8:0]; // p1_card ì¶œë ¥
@@ -172,6 +168,8 @@ module baw_main(
                 led[15:14] = matchresult; 
                 led[13:12] = gameresult;
                 led[11] = finish;
+                led[10] = scoreupdate_pulse;
+                led[9] = reset_n;
             end
         endcase
     end
@@ -214,9 +212,11 @@ module baw_main(
                 if(btnTop) begin
                     state <= bawp;
                     p1_card <= p1_card_;
+                    p1_handcard <= handcard_input;
                 end
                 else if(btnBottom)
                     state <= init;
+                    p2_handcard <= handcard_input;
             end
             p2_turn: begin // p2_turn
                 if(btnTop) begin
@@ -227,7 +227,7 @@ module baw_main(
                     state <= init;
             end
             matchresult_print: begin
-                if(btnLeft) begin// ê²Œìž„ ??‚¬?„?•Œ ê²°ê³¼ì¶œë ¥ stateë¡?
+                if(btnLeft) begin// ê²Œìž„ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ê²°ê³¼ì¶œë ¥ stateï¿½?
                     
                     if(finish == 1)
                         state <= gameresult_print;
@@ -237,7 +237,7 @@ module baw_main(
                 else if(btnBottom)
                     state <= init;
             end
-            gameresult_print:begin // ê²Œìž„ ??¼ ?•Œ
+            gameresult_print:begin // ê²Œìž„ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½
                 if(btnBottom)
                     state <= init;
             end
