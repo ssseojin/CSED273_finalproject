@@ -1,12 +1,12 @@
-//  ?¼?š´?“œ ??‚˜ê³? ?Š¹?Œ¨ ?™•? •?‚¬?Š”ì§? ?™•?¸
+//  ?î²?îª¿?ï¿½ ?ï¿½?ï¿½çª¸? ?ï’”?ï–½ ?ï¿½?ï¿½?î¾Ÿ?ï¿½é´”? ?ï¿½?î²š
 
 module isfinish(
     input [3:0] round,
-    input [3:0] win, // p1 ?Š¹
-    input [3:0] lose, // p1 ?Œ¨
+    input [3:0] win, // p1 ?ï’”
+    input [3:0] lose, // p1 ?ï–½
     output fin, [1:0]printwinner
 );   
-    //  ?‚¨?? ?¼?š´?“œê°? ?Š¹?Œ¨?— ?˜?–¥?´ ?—†?„ ?•Œ
+    //  ?î¾›?? ?î²?îª¿?ï¿½ç©ˆ? ?ï’”?ï–½?ï¿½ ?ï¿½?î ¼?î²– ?ï¿½?ï¿½ ?ï¿½
     // <=>
     wire [1:0]winner;
     wire [3:0] nine;
@@ -14,7 +14,7 @@ module isfinish(
     assign nine[2]=0;
     assign nine[1]=0;
     assign nine[0]=1;
-    // win > lose + (9 - round)ë©? p1?Š¹ ?™•? •
+    // win > lose + (9 - round)è«°? p1?ï’” ?ï¿½?ï¿½
     /*
     wire [3:0]l9r, _9r, w9r, wr;
     wire carry1, carry2;
@@ -23,20 +23,20 @@ module isfinish(
     subtractor leftround (nine, round, _9r);
     adder iswin(lose, _9r, 0, l9r, carry2);
     
-    magnitude_comparator compare1( win,l9r,checkwin);//->?¸ë¨?ï¿? ï¿½ëœ‘ ï¿½ê²™ï§ï¿½ å¯ƒê³Œ?‚µï¿½ë¿‰ ï¿½ëµ²ï¿½ì”ª fin è­°ê³—? ™
+    magnitude_comparator compare1( win,l9r,checkwin);//->?î’¡è«Ÿ?åš™? åš™è¶Ÿï¿½ åš™èµ­ï¿½é´½îµ®è•­ æ’–ïºï¿½?î¾¨åš™è¶Ÿï¿½ åš™è¶Ÿçµåš™è¶£îœ‡ fin éœ…åœ‹ï¿½?ï¿½
 
-    // lose > win + (9 - round)ï§ï¿½ p2ï¿½ë“… ï¿½ì†—ï¿½ì ™
+    // lose > win + (9 - round)é´½îè•­ p2åš™è¶Ÿï¿½ åš™è¶£ï¿½åš™è¶£ï¿½
     adder islose( win,_9r,0, w9r, carry2 );
-    magnitude_comparator compare2(lose, w9r,checklose);//->ë­ê? ?” ?°ì§? ê²°ê³¼?— ?”°?¼ fin ì¡°ì •
-    // ??¸ê°?
+    magnitude_comparator compare2(lose, w9r,checklose);//->è«¨î““? ?ï¿½ ?î¼†é´”? çª¶åœ‹é ƒ?ï¿½ ?îœ?î² fin é­½åŸŸï¿½
+    // ?ï¿½?î²šç©ˆ?
     assign fin=(checkwin[1]&~checkwin[0])|(checklose[1]&~checklose[0])|(round[3]&~round[2]&~round[1]&round[0]);
-    //?Š¹?ì¶œë ¥
+    //?ï’”?ï¿½é»ºî°°î¹
     */
     assign fin = round[3] & ~round[2] & ~round[1] & ~round[0];
-    magnitude_comparator compare3(win,lose, winner);//win?´ ?¬ë©? 10?œ¼ë¡? 1?Š¹ë¦?//loseê°? ?¬ë©? 11ë¡? 2?Š¹ë¦?//ë¬´ìŠ¹ë¶?ë©? 01
+    magnitude_comparator compare3(win,lose, winner);//win?î²– ?î¼‚è«°? 10?î°è«¢? 1?ï’”è¬”?//loseç©ˆ? ?î¼‚è«°? 11è«¢? 2?ï’”è¬”?//è«¡æ¸¥ï’”è³±?è«°? 01
     assign printwinner[1]=winner[1];
     assign printwinner[0]=winner[0];
-    // arithmetic operator ?“°ë©? ?•ˆ?˜?‹ˆê¹? Lab5?— 4-bit adder ëª¨ë“ˆ + magnitude comparator ëª¨ë“ˆ ?“°ê¸?
+    // arithmetic operator ?î™°è«°? ?ï¿½?ï¿½?ï¿½ç¯§? Lab5?ï¿½ 4-bit adder è«ˆåˆºï¿½ + magnitude comparator è«ˆåˆºï¿½ ?î™°ç¯£?
 
 endmodule
 
@@ -71,22 +71,40 @@ endmodule
 
 
 
-module subtractor(
-    input [3:0] a,
-    input [3:0] b,
-    output [3:0] out
-);
+// module subtractor(
+//     input [3:0] a,
+//     input [3:0] b,
+//     output [3:0] out
+// );
 
-    wire borrow;
+//     wire borrow;
     
-    assign borrow = ~(a[0] ^ b[0]);
-    assign out[0] = a[0] ^ b[0];
+//     assign borrow = ~(a[0] ^ b[0]);
+//     assign out[0] = a[0] ^ b[0];
     
-    assign out[1] = (a[1] & ~b[1] & ~borrow) | (~a[1] & b[1] & borrow);
-    assign out[2] = (a[2] & ~b[2] & ~borrow & ~a[1]) | (~a[2] & b[2] & (borrow | a[1])) | (a[2] & b[2] & borrow & ~a[1]);
-    assign out[3] = (a[3] & ~b[3] & ~borrow & ~a[2]) | (~a[3] & b[3] & (borrow | a[2])) | (a[3] & b[3] & borrow & ~a[2]);
+//     assign out[1] = (a[1] & ~b[1] & ~borrow) | (~a[1] & b[1] & borrow);
+//     assign out[2] = (a[2] & ~b[2] & ~borrow & ~a[1]) | (~a[2] & b[2] & (borrow | a[1])) | (a[2] & b[2] & borrow & ~a[1]);
+//     assign out[3] = (a[3] & ~b[3] & ~borrow & ~a[2]) | (~a[3] & b[3] & (borrow | a[2])) | (a[3] & b[3] & borrow & ~a[2]);
+
+// endmodule
+
+module subtractor(
+    input [3:0] in_a,
+    input [3:0] in_b,
+    output [3:0] out_s
+     
+);
+    input in_c;
+    assign in_c=0;
+    wire out_c;
+    wire [2:0] mid_c;
+
+    // Full adder ì¸ìŠ¤í„´ìŠ¤ ìƒì„±
+    fullAdder fa0 (in_a[0], ~in_b[0], in_c, out_s[0], mid_c[0]);
+    fullAdder fa1 (in_a[1], ~in_b[1], mid_c[0], out_s[1], mid_c[1]);
+    fullAdder fa2 (in_a[2], ~in_b[2], mid_c[1], out_s[2], mid_c[2]);
+    fullAdder fa3 (in_a[3], ~in_b[3], mid_c[2], out_s[3], out_c);
 
 endmodule
-
 
 
