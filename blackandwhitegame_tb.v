@@ -32,22 +32,14 @@ module baw_main_tb;
         .ssDisp(ssDisp),
         .led(led)
     );
+    assign fin=uut.finish1.fin;
+    assign matchresult=uut.comparator.matchresult;
+    assign round=uut.score.round;
+    assign win=uut.score.win;
+    assign lose=uut.score.lose;
+    assign resetn=uut.score.resetn;
 
-    isfinish isfin(
-        .fin(fin),
-    );
-
-    compare com(
-        .matchresult(matchresult)
-    );
-
-    scoreupdat scoreup(
-        .round(round),
-        .win(win),
-        .lose(lose),
-        .resetn(resetn)
-    );
-
+    
     initial begin
         // Initialize Inputs
         clk = 0;
