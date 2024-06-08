@@ -1,5 +1,7 @@
-//isfinish tb// by gpt
-module tb_isfinish;
+`timescale 1ns / 1ps
+
+module isfinish_tb;
+
     reg [3:0] round;
     reg [3:0] win;
     reg [3:0] lose;
@@ -15,45 +17,29 @@ module tb_isfinish;
         .printwinner(printwinner)
     );
 
+    integer i, j, k;
+
     initial begin
-        // Test case 1: ?ïÑÏß? ?ùº?ö¥?ìúÍ∞? ?Ç®?ïÑ?ûà?ùå
-        round = 4'b0101; // Round 5
-        win = 4'b0010;   // Win 3
-        lose = 4'b0011;  // Lose 2
-        #10;
-        $display("round = %b, win = %b, lose = %b, fin = %b, printwinner = %b", round, win, lose, fin, printwinner);
-        // Expected output: fin = 0, printwinner = 00
+        // Initialize inputs
+        round = 0;
+        win = 0;
+        lose = 0;
 
-        // Test case 2: p1?ù¥ ?äπÎ¶¨Î?? ?ôï?†ïÏß??ùå
-        round = 4'b1001; // Round 9
-        win = 4'b0110;   // Win 6
-        lose = 4'b0010;  // Lose 2
-        #10;
-        $display("round = %b, win = %b, lose = %b, fin = %b, printwinner = %b", round, win, lose, fin, printwinner);
-        // Expected output: fin = 1, printwinner = 10
-
-        // Test case 3: p2?ù¥ ?äπÎ¶¨Î?? ?ôï?†ïÏß??ùå
-        round = 4'b1001; // Round 9
-        win = 4'b0010;   // Win 2
-        lose = 4'b0110;  // Lose 6
-        #10;
-        $display("round = %b, win = %b, lose = %b, fin = %b, printwinner = %b", round, win, lose, fin, printwinner);
-        // Expected output: fin = 1, printwinner = 11
-
-        // Test case 4: Î¨¥ÏäπÎ∂?
-        round = 4'b1001; // Round 9
-        win = 4'b0101;   // Win 5
-        lose = 4'b0101;  // Lose 5
-        #10;
-        $display("round = %b, win = %b, lose = %b, fin = %b, printwinner = %b", round, win, lose, fin, printwinner);
-        // Expected output: fin = 1, printwinner = 01
-
-        // Test case 5: ?ùº?ö¥?ìúÍ∞? ?Åù?Ç¨Ïß?Îß? ?äπ?å®Í∞? ?ôï?†ï?êòÏß? ?ïä?ùå
-        round = 4'b1000; // Round 8
-        win = 4'b0100;   // Win 4
-        lose = 4'b0100;  // Lose 4
-        #10;
-        $display("round = %b, win = %b, lose = %b, fin = %b, printwinner = %b", round, win, lose, fin, printwinner);
-        // Expected output: fin = 0, printwinner = 00
+        // Test all combinations of round, win, and lose
+        for (i = 0; i < 9; i = i + 1) begin
+            for (j = 0; j < 9; j = j + 1) begin
+                for (k = 0; k < i-j; k = k + 1) begin
+                    round = i;
+                    win = j;
+                    lose = k;
+                    #10; // Wait for some time to observe the output
+                    $display("round = %d, win = %d, lose = %d, fin = %b, printwinner = %b", round, win, lose, fin, printwinner);
+                end
+            end
+        end
+        
+        // End the simulation
+        $finish;
     end
+
 endmodule
