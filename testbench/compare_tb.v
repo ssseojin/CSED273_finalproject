@@ -1,3 +1,5 @@
+`timescale 1ns / 1ps
+
 module compare_tb;
     reg [3:0] p1_handcard;
     reg [3:0] p2_handcard;
