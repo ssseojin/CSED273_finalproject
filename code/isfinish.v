@@ -1,42 +1,40 @@
-//  ?¼?š´?“œ ??‚˜ê³? ?Š¹?Œ¨ ?™•? •?‚¬?Š”ì§? ?™•?¸
-
 module isfinish(
     input [3:0] round,
-    input [3:0] win, // p1 ?Š¹
-    input [3:0] lose, // p1 ?Œ¨
+    input [3:0] win, // p1 ?ï¿½ï¿½
+    input [3:0] lose, // p1 ?ï¿½ï¿½
     output fin, [1:0]printwinner
 );   
-    //  ?‚¨?? ?¼?š´?“œê°? ?Š¹?Œ¨?— ?˜?–¥?´ ?—†?„ ?•Œ
+    //  ?ï¿½ï¿½?? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½
     // <=>
     wire [1:0]winner;
-    wire [3:0] eight;
-    assign eight[3]=1;
-    assign eight[2]=0;
-    assign eight[1]=0;
-    assign eight[0]=0;
-    // win > lose + (8 - round)ë©? p1?Š¹ ?™•? •
+    wire [3:0] nine;
+    assign nine[3]=1;
+    assign nine[2]=0;
+    assign nine[1]=0;
+    assign nine[0]=1;
+    // win > lose + (9 - round)ï¿½? p1?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½
     
-    wire [3:0]l8r, _8r, w8r, wr;
+    wire [3:0]l9r, _9r, w9r, wr;
     wire carry1, carry2;
     wire [1:0]checkwin, checklose;
     
-    subtractor leftround (eight, round, _8r);
-    adder iswin(lose, _8r, 0, l8r, carry2);
+    subtractor leftround (nine, round, _9r);
+    adder iswin(lose, _9r, 0, l9r, carry2);
     
-    magnitude_comparator compare1( win,l8r,checkwin);//->?¸ë¨?ï¿? ï¿½ëœ‘ ï¿½ê²™ï§ï¿½ å¯ƒê³Œ?‚µï¿½ë¿‰ ï¿½ëµ²ï¿½ì”ª fin è­°ê³—? ™
+    magnitude_comparator compare1( win,l9r,checkwin);//->?ï¿½ï¿½ï¿½?ï¿½? ï¿½ëœ‘ ï¿½ê²™ï§ï¿½ å¯ƒê³Œ?ï¿½ï¿½ï¿½ë¿‰ ï¿½ëµ²ï¿½ì”ª fin è­°ê³—?ï¿½ï¿½
 
-    // lose > win + (8 - round)ï§ï¿½ p2ï¿½ë“… ï¿½ì†—ï¿½ì ™
-    adder islose( win,_8r,0, w8r, carry2 );
-    magnitude_comparator compare2(lose, w8r,checklose);//->ë­ê? ?” ?°ì§? ê²°ê³¼?— ?”°?¼ fin ì¡°ì •
-    // ??¸ê°?
+    // lose > win + (9 - round)ï§ï¿½ p2ï¿½ë“… ï¿½ì†—ï¿½ì ™
+    adder islose( win,_9r,0, w9r, carry2 );
+    magnitude_comparator compare2(lose, w9r,checklose);//->ë­ï¿½? ?ï¿½ï¿½ ?ï¿½ï¿½ï¿½? ê²°ê³¼?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ fin ì¡°ì •
+    // ?ï¿½ï¿½?ï¿½ï¿½ï¿½?
     assign fin=(checkwin[1]&~checkwin[0])|(checklose[1]&~checklose[0])|(round[3]&~round[2]&~round[1]&~round[0]);
-    //?Š¹?ì¶œë ¥
+    //?ï¿½ï¿½?ï¿½ï¿½ì¶œë ¥
     
     //assign fin = round[3] & ~round[2] & ~round[1] & ~round[0];
-    magnitude_comparator compare3(win,lose, winner);//win?´ ?¬ë©? 10?œ¼ë¡? 1?Š¹ë¦?//loseê°? ?¬ë©? 11ë¡? 2?Š¹ë¦?//ë¬´ìŠ¹ë¶?ë©? 01
+    magnitude_comparator compare3(win,lose, winner);//win?ï¿½ï¿½ ?ï¿½ï¿½ï¿½? 10?ï¿½ï¿½ï¿½? 1?ï¿½ï¿½ï¿½?//loseï¿½? ?ï¿½ï¿½ï¿½? 11ï¿½? 2?ï¿½ï¿½ï¿½?//ë¬´ìŠ¹ï¿½?ï¿½? 01
     assign printwinner[1]=winner[1];
     assign printwinner[0]=winner[0];
-    // arithmetic operator ?“°ë©? ?•ˆ?˜?‹ˆê¹? Lab5?— 4-bit adder ëª¨ë“ˆ + magnitude comparator ëª¨ë“ˆ ?“°ê¸?
+    // arithmetic operator ?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿½? Lab5?ï¿½ï¿½ 4-bit adder ëª¨ë“ˆ + magnitude comparator ëª¨ë“ˆ ?ï¿½ï¿½ï¿½?
 
 endmodule
 
@@ -100,7 +98,7 @@ module subtractor(
     wire out_c;
     wire [2:0] mid_c;
 
-    // Full adder ÀÎ½ºÅÏ½º »ı¼º
+    // Full adder ï¿½Î½ï¿½ï¿½Ï½ï¿½ ï¿½ï¿½ï¿½ï¿½
     full_adder fa0 (a[0], ~b[0], 1, out[0], mid_c[0]);
     full_adder fa1 (a[1], ~b[1], mid_c[0], out[1], mid_c[1]);
     full_adder fa2 (a[2], ~b[2], mid_c[1], out[2], mid_c[2]);
