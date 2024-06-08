@@ -1,11 +1,11 @@
-// ?��?��?�� ?��?���? matchresult?�� ?��?�� ?��?��?���?
+// ?��?��?�� ?��?���?? matchresult?�� ?��?�� ?��?��?���??
 // round counter, win counter, lose counter ?��?��?��?��
 
-// Lab6?�� counter 모듈 ?���?
+// Lab6?�� counter 모듈 ?���??
 
 // round?�� ?��?��?�� ?��?��?��마다 1 추�?
-// p1 ?��?���? win counter 1 추�?
-// p2 ?��?���? lose counter 1 추�?
+// p1 ?��?���?? win counter 1 추�?
+// p2 ?��?���?? lose counter 1 추�?
 
 module scoreupdate(
     input [1:0] matchresult,
@@ -41,8 +41,8 @@ module edge_trigger_JKFF(input j, input k, input clk, input resetn, output reg q
       q_ = ~q;
     end
        
-    always @(posedge clk or negedge resetn) begin
-        if(!resetn) begin
+    always @(negedge clk or posedge resetn) begin
+        if(resetn == 1) begin
             q = 0;
             q_ = 1;
         end
@@ -57,12 +57,12 @@ endmodule
 module edge_trigger_JKFFp(input j, input k, input clk, input resetn, output reg q, output reg q_);  
     
     initial begin
-      q = 0;
+      q = 1;
       q_ = ~q;
     end
        
-    always @(posedge clk or negedge resetn) begin
-        if(!resetn) begin
+    always @(negedge clk or posedge resetn) begin
+        if(resetn == 1) begin
             q = 1;
             q_ = 0;
         end

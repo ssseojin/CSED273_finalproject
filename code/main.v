@@ -29,7 +29,7 @@ module baw_main(
     reg [8:0] cardselect;
 
     wire reset_n;
-    assign reset_n = ~(~state[2] & ~state[1] & ~state[0]);
+    assign reset_n = (~state[2] & ~state[1] & ~state[0]);
 
     reg [8:0] p1_card, p2_card;
     reg [3:0] p1_handcard, p2_handcard;
@@ -51,7 +51,7 @@ module baw_main(
     wire handout_p1_pulse;
     wire handout_p2_pulse;
 
-    assign scoreupdate_pulse = ~(state[2] & ~state[1] & state[0]); // 101
+    assign scoreupdate_pulse = (state[2] & ~state[1] & state[0]) | reset_n; // 101
     assign handout_p1_pulse = ~(~state[2] & state[1] & state[0]); // 011
     assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
@@ -87,7 +87,7 @@ module baw_main(
     // handcard handcard2(handcard_input, handout_p2_pulse, reset_n, p2_handcard);
     // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
     
-    //?��카드 ?��백여�?? + (카드 ?��?���?? ?���???)
+    //?��카드 ?��백여�??? + (카드 ?��?���??? ?���????)
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
 
@@ -152,17 +152,17 @@ module baw_main(
         case(state)
             bawp: begin
                 led[12] = ~p1_handcard_isblack;
-                led[13] = p1_handcard_isblack; // ?��백여�?? 출력
+                led[13] = p1_handcard_isblack; // ?��백여�??? 출력
                 led[14] = ~p2_handcard_isblack;
                 led[15] = p2_handcard_isblack;
                 led[11:0] = 12'b0;
-                //led?�� ?��?���?? ?���?? ?��?��
+                //led?�� ?��?���??? ?���??? ?��?��
             end
             p1_turn: begin
-                led[8:0] = p1_card[8:0]; // p1_card 출력
+                led[8:0] = p1_card_[8:0]; // p1_card 출력
             end
             p2_turn: begin
-                led[8:0] = p2_card[8:0]; // p2_card 출력
+                led[8:0] = p2_card_[8:0]; // p2_card 출력
             end
             default: begin
                 led[15:14] = matchresult; 
@@ -170,6 +170,8 @@ module baw_main(
                 led[11] = finish;
                 led[10] = scoreupdate_pulse;
                 led[9] = reset_n;
+                led[3:0] = p1_handcard;
+                led[7:4] = p2_handcard;
             end
         endcase
     end
@@ -191,8 +193,11 @@ module baw_main(
                 end
             end
             rasp: begin // Round and Score print state
-                if(btnTop)
+                if(btnTop) begin
                     state <= bawp;
+                    p1_handcard <= 4'b0000;
+                    p2_handcard <= 4'b0000;
+                end
                 else if(btnBottom)
                     state <= init;
             end
@@ -216,18 +221,18 @@ module baw_main(
                 end
                 else if(btnBottom)
                     state <= init;
-                    p2_handcard <= handcard_input;
             end
             p2_turn: begin // p2_turn
                 if(btnTop) begin
                     state <= bawp;
                     p2_card <= p2_card_;
+                    p2_handcard <= handcard_input;
                 end
                 else if(btnBottom)
                     state <= init;
             end
             matchresult_print: begin
-                if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�?
+                if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�??
                     
                     if(finish == 1)
                         state <= gameresult_print;
