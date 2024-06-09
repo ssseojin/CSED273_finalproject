@@ -41,18 +41,18 @@ module edge_trigger_JKFF(input j, input k, input clk, input resetn, output reg q
       q_ = ~q;
     end
        
-    always @(negedge clk) begin
-        q = ~resetn & (j&~q | ~k&q);
-        q_ = resetn | ~q;
+    always @(negedge clk or posedge resetn) begin
+//        q = ~resetn & (j&~q | ~k&q);
+//        q_ = resetn | ~q;
 
-//        if(resetn) begin
-//            q = 0;
-//            q_ = 1;
-//        end
-//        else begin
-//            q = (j&~q | ~k&q);
-//            q_ = ~q;
-//        end
+        if(resetn) begin
+            q = 0;
+            q_ = 1;
+        end
+        else begin
+            q = (j&~q | ~k&q);
+            q_ = ~q;
+        end
     end
     
 endmodule
@@ -64,17 +64,17 @@ module edge_trigger_JKFFp(input j, input k, input clk, input resetn, output reg 
       q_ = ~q;
     end
        
-    always @(negedge clk) begin
-        q = resetn | (j&~q | ~k&q);
-        q_ = ~resetn & ~q;
-//        if(resetn) begin
-//            q = 1;
-//            q_ = 0;
-//        end
-//        else begin
-//            q = (j&~q | ~k&q);
-//            q_ = ~q;
-//        end
+    always @(negedge clk or posedge resetn) begin
+//        q = resetn | (j&~q | ~k&q);
+//        q_ = ~resetn & ~q;
+        if(resetn) begin
+            q = 1;
+            q_ = 0;
+        end
+        else begin
+            q = (j&~q | ~k&q);
+            q_ = ~q;
+        end
     end
     
 endmodule

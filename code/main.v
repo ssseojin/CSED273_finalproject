@@ -29,8 +29,10 @@ module baw_main(
     reg [2:0] state;
     reg [8:0] cardselect;
 
+//    wire resetn;
+//    assign resetn = (~state[2] & ~state[1] & ~state[0]);
     wire resetn;
-    assign resetn = (~state[2] & ~state[1] & ~state[0]);
+    assign resetn = sw[15];
 
     reg [8:0] p1_card, p2_card;
     reg [3:0] p1_handcard, p2_handcard;
@@ -52,7 +54,7 @@ module baw_main(
     wire handout_p1_pulse;
     wire handout_p2_pulse;
 
-    assign scoreupdate_pulse = (state[2] & ~state[1] & state[0]) | resetn; // 101
+    assign scoreupdate_pulse = (state[2] & ~state[1] & state[0]); // 101
     assign handout_p1_pulse = ~(~state[2] & state[1] & state[0]); // 011
     assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
@@ -130,7 +132,9 @@ module baw_main(
             //     p1_handcard <= 9'b0;
             //     p2_handcard <= 9'b0;
             // end
-            default : cardselect <= 9'b0; // ?��?��?��?
+            default : begin 
+                      cardselect <= 9'b0; // ?��?��?��?
+            end
         endcase
     end
 
