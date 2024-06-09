@@ -12,7 +12,7 @@ module baw_main(
     input [15:0] sw,
     output [0:3] ssSel,
     output [7:0] ssDisp,
-    output reg[15:0] led
+    output [15:0] led
 );
 
     //parameter
@@ -30,9 +30,6 @@ module baw_main(
     wire resetn;
     assign resetn = sw[15];
 
-    reg [8:0] cardselect;
-    reg [8:0] p1_card, p2_card;
-    reg [3:0] p1_handcard, p2_handcard;
 
     wire [3:0] round, win, lose;
     wire finish;
@@ -66,8 +63,6 @@ module baw_main(
     assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
     scoreupdate score(matchresult, scoreupdate_pulse, resetn, round, win, lose);
-    // handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
-    // handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
 
     wire [3:0] handcard_input;
     wire [15:0] i;
@@ -89,11 +84,23 @@ module baw_main(
     assign i[15] = 0;
 
     encoder ec(i, handcard_input);
+    
 
-    // handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
-    // card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
-    // handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
-    // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
+    
+    // reg [8:0] cardselect;
+    // reg [8:0] p1_card, p2_card;
+    // reg [3:0] p1_handcard, p2_handcard;
+    
+    wire [8:0] cardselect;
+    wire [8:0] p1_card, p2_card;
+    wire [3:0] p1_handcard, p2_handcard;
+
+    handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
+    handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
+    handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
+    card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
+    handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
+    card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
 
     wire [8:0] p1_card_;
     assign p1_card_[0] = p1_card[0] & ~cardselect[0];
@@ -184,8 +191,8 @@ module baw_main(
             p1_turn: begin
                 if(btnTop) begin
                     state <= bawp;
-                    p1_card <= p1_card_;
-                    p1_handcard <= handcard_input;
+                    // p1_card <= p1_card_;
+                    // p1_handcard <= handcard_input;
                 end
                 else if(btnBottom)
                     state <= init;
@@ -193,8 +200,8 @@ module baw_main(
             p2_turn: begin
                 if(btnTop) begin
                     state <= bawp;
-                    p2_card <= p2_card_;
-                    p2_handcard <= handcard_input;
+                    // p2_card <= p2_card_;
+                    // p2_handcard <= handcard_input;
                 end
                 else if(btnBottom)
                     state <= init;
