@@ -31,70 +31,70 @@ module scoreupdate_tb;
     initial begin
         // Initialize Inputs
         matchresult = 2'b00;
-        resetn = 1;
+
         #10;
 
         // Reset the system
-        resetn = 0;
+
         #10;
-        resetn = 1;
+
         #10;
 
         // Case 1: matchresult = 2'b00 (No change expected)
         matchresult = 2'b00;
-         resetn = 0;
+        
         #10;
-        resetn = 1;
+      
         #10;
 
         // Case 2: matchresult = 2'b01 (No change expected)
         matchresult = 2'b01;
-       resetn = 0;
+      
         #10;
-        resetn = 1;
+        
         #10;
 
         // Case 3: matchresult = 2'b10 (Win increment expected)
         matchresult = 2'b10;
-         resetn = 0;
+       
         #10;
-        resetn = 1;
+       
         #10;
 
         // Case 4: matchresult = 2'b10 (Lose increment expected)
         matchresult = 2'b11;
-resetn = 0;
+
         #10;
-        resetn = 1;
+        
         #10;
 
         // Repeat the test to see the counting
         matchresult = 2'b10;  // Win incremen
-         resetn = 0;
+        
         #10;
-        resetn = 1;
+       
         #10;
         matchresult = 2'b10;  // Win increment
-       resetn = 0;
+   
         #10;
-        resetn = 1;
+      
         #10;
 
         matchresult = 2'b11;  // Lose increment
-         resetn = 0;
+  
         #10;
-        resetn = 1;
+      
         #10;
         matchresult = 2'b11;  // Lose increment
-         resetn = 0;
+      
         #10;
-        resetn = 1;
+      
         #10;
 
         // Reset the system again
-        resetn = 0;
+   
         #10;
-        resetn = 1;
+    
         #10;
 
         // Case 5: Continue counting after reset
