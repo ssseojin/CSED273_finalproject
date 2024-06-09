@@ -7,9 +7,9 @@ module handout(
     output [3:0] handcard,
     output [8:0] card 
 );
-    // 16:4 encoderë¡œ cardselectí•œê±° handcard 4ë¹„íŠ¸ë¡œ ë³€í™˜
-    // handcard D FFë¡œ ì €ì¥
-    // card T FFë¡œ ì €ì¥ -> ì´ˆê¸°í™”ë¥¼ ì–´ë–»ê²Œí•˜ì§€ ..? resetì´ ë‹¤ë¥´ê²Œ ë˜ëŠ” ë²„ì „ì˜ FFë¥¼ ë§Œë“¤ì–´ì¤˜ì•¼í•¨
+    // 16:4 encoderë¡? cardselect?•œê±? handcard 4ë¹„íŠ¸ë¡? ë³??™˜
+    // handcard D FFë¡? ???¥
+    // card T FFë¡? ???¥ -> ì´ˆê¸°?™”ë¥? ?–´?–»ê²Œí•˜ì§? ..? reset?´ ?‹¤ë¥´ê²Œ ?˜?Š” ë²„ì „?˜ FFë¥? ë§Œë“¤?–´ì¤˜ì•¼?•¨
     wire [15:0] i;
     assign i[0] = cardselect[0];
     assign i[1] = cardselect[1];
@@ -31,7 +31,6 @@ module handout(
     wire [3:0] handcard_input;
 
     encoder encoder0(i, handcard_input);
-
     handcard handcard0(handcard_input, handout_pulse, resetn, handcard);
     card card0(cardselect, handout_pulse, resetn, card);
 

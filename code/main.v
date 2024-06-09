@@ -62,8 +62,8 @@ module baw_main(
     wire handout_p2_pulse;
 
     assign scoreupdate_pulse = (state[2] & ~state[1] & state[0]); // 101
-    assign handout_p1_pulse = ~(~state[2] & state[1] & state[0]); // 011
-    assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
+    assign handout_p1_pulse = (~state[2] & state[1] & state[0]); // 011
+    assign handout_p2_pulse = (state[2] & ~state[1] & ~state[0]);// 100
     
     scoreupdate score(matchresult, scoreupdate_pulse, resetn, round, win, lose);
 
