@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-//0530
+//resetn finish
 
 module baw_main(
     input clk,
@@ -23,14 +23,11 @@ module baw_main(
     parameter p2_turn = 3'b100;
     parameter matchresult_print = 3'b101;
     parameter gameresult_print = 3'b110;
-//    parameter temp = 3'b111;
     
     //variable
     reg [2:0] state;
     reg [8:0] cardselect;
 
-//    wire resetn;
-//    assign resetn = (~state[2] & ~state[1] & ~state[0]);
     wire resetn;
     assign resetn = sw[15];
 
@@ -41,7 +38,6 @@ module baw_main(
     wire finish;
     wire [1:0] matchresult, gameresult;
     wire [3:0] p1_black, p1_white, p2_black, p2_white;
-
 
     //combinational logic
     blackandwhite p1_card_conversion(p1_card, p1_black, p1_white);
@@ -59,7 +55,6 @@ module baw_main(
     assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
     scoreupdate score(matchresult, scoreupdate_pulse, resetn, round, win, lose);
-
 
     // handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
     // handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
@@ -90,7 +85,6 @@ module baw_main(
     // handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
     // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
     
-    //?��카드 ?��백여�??? + (카드 ?��?���??? ?���????)
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
 
@@ -122,31 +116,16 @@ module baw_main(
     always @(posedge clk) begin
         case (state)
             p1_turn: begin 
-                cardselect <= sw[8:0]; // cardselect
-                
+                cardselect <= sw[8:0];
             end
             p2_turn: begin
                 cardselect <= sw[8:0]; 
             end
-            // matchresult: begin
-            //     p1_handcard <= 9'b0;
-            //     p2_handcard <= 9'b0;
-            // end
             default : begin 
-                      cardselect <= 9'b0; // ?��?��?��?
+                cardselect <= 9'b0;
             end
         endcase
     end
-
-
-    //output sevenseg
-    //init state -> init 출력
-    //rasp state -> round win lose 출력
-    //bawp state -> p1black p1white p2black p2white 출력
-    //p1_turn state -> player 출력
-    //p2_turn state
-    //matchresult state -> matchresult 출력
-    //gameresult state -> gameresult 출력
 
     wire [15:0] graphics;
     whattoprint wp(state, round, win, lose, p1_black, p1_white, p2_black, p2_white, gameresult, matchresult, graphics);
@@ -157,17 +136,16 @@ module baw_main(
         case(state)
             bawp: begin
                 led[12] = ~p1_handcard_isblack;
-                led[13] = p1_handcard_isblack; // ?��백여�??? 출력
+                led[13] = p1_handcard_isblack;
                 led[14] = ~p2_handcard_isblack;
                 led[15] = p2_handcard_isblack;
                 led[11:0] = 12'b0;
-                //led?�� ?��?���??? ?���??? ?��?��
             end
             p1_turn: begin
-                led[8:0] = p1_card_[8:0]; // p1_card 출력
+                led[8:0] = p1_card_[8:0];
             end
             p2_turn: begin
-                led[8:0] = p2_card_[8:0]; // p2_card 출력
+                led[8:0] = p2_card_[8:0];
             end
             default: begin
                 led[15:14] = matchresult; 
@@ -186,9 +164,8 @@ module baw_main(
         state <= init;
     end
 
-
     //FSM
-    always @(posedge clk) begin // * btnbottom 구현
+    always @(posedge clk) begin
         case(state)
             init: begin // init state
                 if(btnCenter) begin
@@ -213,14 +190,12 @@ module baw_main(
                     state <= matchresult_print;
                 else if(btnLeft)
                     state <= p1_turn;
-                    
                 else if(btnRight)
                     state <= p2_turn;
                 else if(btnBottom)
                     state <= init;
             end
-            
-            p1_turn: begin // p1_turn
+            p1_turn: begin
                 if(btnTop) begin
                     state <= bawp;
                     p1_card <= p1_card_;
@@ -229,7 +204,7 @@ module baw_main(
                 else if(btnBottom)
                     state <= init;
             end
-            p2_turn: begin // p2_turn
+            p2_turn: begin
                 if(btnTop) begin
                     state <= bawp;
                     p2_card <= p2_card_;
@@ -238,31 +213,18 @@ module baw_main(
                 else if(btnBottom)
                     state <= init;
             end
-            matchresult_print: begin
-                if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�??
+            matchresult_print:begin
+                if(btnLeft) begin
                     state <= rasp;
-//                    else begin
-//                        state <= rasp;
-//                    end
-                    
                 end
                 else if(btnBottom)
                     state <= init;
             end
-            gameresult_print:begin // 게임 ?��?�� ?��
+            gameresult_print:begin
                 if(btnBottom)
                     state <= init;
             end
-//            temp: begin 
-//            if(finish == 1) begin
-//                state <= gameresult_print;
-//            end
-//                    else begin
-//                        state <= rasp;
-//                    end
-//            end
         endcase
     end
-
 
 endmodule
