@@ -32,7 +32,8 @@ module baw_main_tb;
         .sw(sw),
         .ssSel(ssSel),
         .ssDisp(ssDisp),
-        .led(led)
+        .led(led),
+        .state(state)
     );
     assign fin=uut.finish1.fin;
     assign matchresult=uut.comparator.matchresult;
@@ -42,7 +43,6 @@ module baw_main_tb;
     assign resetn=uut.score.resetn;
     assign p1_handcard=uut.comparator.p1_handcard;
     assign p2_handcard=uut.comparator.p2_handcard;
-    assign state=uut.state;
     assign scoreupdatepulse=uut.scoreupdate_pulse;
     assign winclk=uut.score.win2.clk;
     assign loseclk=uut.score.lose2.clk;
@@ -67,221 +67,158 @@ module baw_main_tb;
 //////round 0
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);
         btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00010000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00010000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00100000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00100000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-///////round1
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);///////round1
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnTop = 1; #5; btnTop = 0; // Move to bawp state
+        #5;
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        #5;
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00100000000000000; // Set switch value
+        btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
+        #5;
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        #5;
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b10000000000000000; // Set switch value
+        btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
+        #5;
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        #5;
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft =  1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        #5;
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);//////////roudn2
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00100000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b10000000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b10000000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b01000000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft =  1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-//////////roudn2
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);//////////round3
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b10000000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00001000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b01000000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000100000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-//////////round3
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);/////////round4
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00001000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000100000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000100000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00001000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-/////////round4
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);/////////round5
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000100000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b01000000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00001000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00010000000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-/////////round5
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);//////////round6
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b01000000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000001000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00010000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000001000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-//////////round6
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);///////round7
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000001000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000010000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000001000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000010000000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-///////round7
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);//////round8 **지금은 여기 오면 안된다**
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000010000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000000100000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000010000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00000000100000000; // Set switch value
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-//////round8 **지금은 여기 오면 안된다**
-        btnTop = 1; #5; btnTop = 0; // Move to bawp state
-        #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
-        #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000000100000000; // Set switch value
-        btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
-        #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
-        #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        sw = 16'b00000000100000000; // Set switch value
-        btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
-        #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
-        #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-        btnLeft = 1; #5; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
-        #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
-//////
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);//////
 
 
 
