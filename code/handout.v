@@ -2,15 +2,14 @@
 
 module handout(
     input [8:0] cardselect,
-    input [8:0] card_,
     input handout_pulse,
     input resetn,
     output [3:0] handcard,
     output [8:0] card 
 );
-    // 16:4 encoderï¿½? cardselect?ï¿½ï¿½ï¿½? handcard 4ë¹„íŠ¸ï¿½? ï¿½??ï¿½ï¿½
-    // handcard D FFï¿½? ???ï¿½ï¿½
-    // card T FFï¿½? ???ï¿½ï¿½ -> ì´ˆê¸°?ï¿½ï¿½ï¿½? ?ï¿½ï¿½?ï¿½ï¿½ê²Œí•˜ï¿½? ..? reset?ï¿½ï¿½ ?ï¿½ï¿½ë¥´ê²Œ ?ï¿½ï¿½?ï¿½ï¿½ ë²„ì „?ï¿½ï¿½ FFï¿½? ë§Œë“¤?ï¿½ï¿½ì¤˜ì•¼?ï¿½ï¿½
+    // 16:4 encoderë¡? cardselect?•œê±? handcard 4ë¹„íŠ¸ë¡? ë³??™˜
+    // handcard D FFë¡? ???¥
+    // card T FFë¡? ???¥ -> ì´ˆê¸°?™”ë¥? ?–´?–»ê²Œí•˜ì§? ..? reset?´ ?‹¤ë¥´ê²Œ ?˜?Š” ë²„ì „?˜ FFë¥? ë§Œë“¤?–´ì¤˜ì•¼?•¨
     wire [15:0] i;
     assign i[0] = cardselect[0];
     assign i[1] = cardselect[1];
@@ -33,7 +32,7 @@ module handout(
 
     encoder encoder0(i, handcard_input);
     handcard handcard0(handcard_input, handout_pulse, resetn, handcard);
-    card card0(card_, handout_pulse, resetn, card);
+    card card0(cardselect, handout_pulse, resetn, card);
 
 endmodule
 
@@ -48,46 +47,26 @@ module encoder(
     
 endmodule
 
-// module card(
-//     input [8:0] t,
-//     input clk,
-//     input resetn,
-//     output [8:0] card
-// );
-//     wire [8:0] q, q_;
-
-//     edge_trigger_TFFp c0(t[0], clk, resetn, q[0], q_[0]);
-//     edge_trigger_TFFp c1(t[1], clk, resetn, q[1], q_[1]);
-//     edge_trigger_TFFp c2(t[2], clk, resetn, q[2], q_[2]);
-//     edge_trigger_TFFp c3(t[3], clk, resetn, q[3], q_[3]);
-//     edge_trigger_TFFp c4(t[4], clk, resetn, q[4], q_[4]);
-//     edge_trigger_TFFp c5(t[5], clk, resetn, q[5], q_[5]);
-//     edge_trigger_TFFp c6(t[6], clk, resetn, q[6], q_[6]);
-//     edge_trigger_TFFp c7(t[7], clk, resetn, q[7], q_[7]);
-//     edge_trigger_TFFp c8(t[8], clk, resetn, q[8], q_[8]);
-
-//     assign card = q;
-
-// endmodule
-
 module card(
-    input [8:0] card_,
+    input [8:0] t,
     input clk,
     input resetn,
     output [8:0] card
 );
     wire [8:0] q, q_;
-    edge_trigger_DFFp c0(t[0], clk, resetn, q[0], q_[0]);
-    edge_trigger_DFFp c1(t[1], clk, resetn, q[1], q_[1]);
-    edge_trigger_DFFp c2(t[2], clk, resetn, q[2], q_[2]);
-    edge_trigger_DFFp c3(t[3], clk, resetn, q[3], q_[3]);
-    edge_trigger_DFFp c4(t[4], clk, resetn, q[4], q_[4]);
-    edge_trigger_DFFp c5(t[5], clk, resetn, q[5], q_[5]);
-    edge_trigger_DFFp c6(t[6], clk, resetn, q[6], q_[6]);
-    edge_trigger_DFFp c7(t[7], clk, resetn, q[7], q_[7]);
-    edge_trigger_DFFp c8(t[8], clk, resetn, q[8], q_[8]);
+
+    edge_trigger_TFFp c0(t[0], clk, resetn, q[0], q_[0]);
+    edge_trigger_TFFp c1(t[1], clk, resetn, q[1], q_[1]);
+    edge_trigger_TFFp c2(t[2], clk, resetn, q[2], q_[2]);
+    edge_trigger_TFFp c3(t[3], clk, resetn, q[3], q_[3]);
+    edge_trigger_TFFp c4(t[4], clk, resetn, q[4], q_[4]);
+    edge_trigger_TFFp c5(t[5], clk, resetn, q[5], q_[5]);
+    edge_trigger_TFFp c6(t[6], clk, resetn, q[6], q_[6]);
+    edge_trigger_TFFp c7(t[7], clk, resetn, q[7], q_[7]);
+    edge_trigger_TFFp c8(t[8], clk, resetn, q[8], q_[8]);
+
     assign card = q;
-    
+
 endmodule
 
 module handcard(

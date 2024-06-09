@@ -1,11 +1,11 @@
-// ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿?? matchresult?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿??
-// round counter, win counter, lose counter ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
+// ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö?¢¯?? matchresult??¢¯¨ö?¢¯¨ö ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö?¢¯??
+// round counter, win counter, lose counter ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö
 
-// Lab6?ï¿½ï¿½ counter ëª¨ë“ˆ ?ï¿½ï¿½ï¿??
+// Lab6??¢¯¨ö?¢¯¨ö counter ?¨£¡§?"? ??¢¯¨ö?¢¯¨ö?¢¯??
 
-// round?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë§ˆë‹¤ 1 ì¶”ï¿½?
-// p1 ?ï¿½ï¿½?ï¿½ï¿½ï¿?? win counter 1 ì¶”ï¿½?
-// p2 ?ï¿½ï¿½?ï¿½ï¿½ï¿?? lose counter 1 ì¶”ï¿½?
+// round??¢¯¨ö?¢¯¨ö ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö?¡×???¢´ 1 ?¢Ò"?¢¯¨ö?
+// p1 ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö?¢¯?? win counter 1 ?¢Ò"?¢¯¨ö?
+// p2 ??¢¯¨ö?¢¯¨ö??¢¯¨ö?¢¯¨ö?¢¯?? lose counter 1 ?¢Ò"?¢¯¨ö?
 
 module scoreupdate(
     input [1:0] matchresult,
@@ -17,8 +17,8 @@ module scoreupdate(
 );
     wire win_clk, lose_clk;
 
-    assign win_clk = (~matchresult[0] & matchresult[1] & clk); // 10 ?ï¿½ï¿½
-    assign lose_clk = (matchresult[0] & matchresult[1] & clk); // 11 ?ï¿½ï¿½
+    assign win_clk = (~matchresult[0] & matchresult[1] & clk); // 10 ??¢¯¨ö?¢¯¨ö
+    assign lose_clk = (matchresult[0] & matchresult[1] & clk); // 11 ??¢¯¨ö?¢¯¨ö
 
     counter round2(clk, resetn, round);
     counter win2(win_clk, resetn, win);
@@ -41,18 +41,18 @@ module edge_trigger_JKFF(input j, input k, input clk, input resetn, output reg q
       q_ = ~q;
     end
        
-    always @(negedge clk or posedge resetn) begin
-//        q = ~resetn & (j&~q | ~k&q);
-//        q_ = resetn | ~q;
+    always @(negedge clk) begin
+        q = ~resetn & (j&~q | ~k&q);
+        q_ = resetn | ~q;
 
-        if(resetn) begin
-            q = 0;
-            q_ = 1;
-        end
-        else begin
-            q = (j&~q | ~k&q);
-            q_ = ~q;
-        end
+//        if(resetn) begin
+//            q = 0;
+//            q_ = 1;
+//        end
+//        else begin
+//            q = (j&~q | ~k&q);
+//            q_ = ~q;
+//        end
     end
     
 endmodule
@@ -64,17 +64,17 @@ module edge_trigger_JKFFp(input j, input k, input clk, input resetn, output reg 
       q_ = ~q;
     end
        
-    always @(negedge clk or posedge resetn) begin
-//        q = resetn | (j&~q | ~k&q);
-//        q_ = ~resetn & ~q;
-        if(resetn) begin
-            q = 1;
-            q_ = 0;
-        end
-        else begin
-            q = (j&~q | ~k&q);
-            q_ = ~q;
-        end
+    always @(negedge clk) begin
+        q = resetn | (j&~q | ~k&q);
+        q_ = ~resetn & ~q;
+//        if(resetn) begin
+//            q = 1;
+//            q_ = 0;
+//        end
+//        else begin
+//            q = (j&~q | ~k&q);
+//            q_ = ~q;
+//        end
     end
     
 endmodule
