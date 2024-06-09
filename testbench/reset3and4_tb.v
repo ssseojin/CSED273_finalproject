@@ -1,3 +1,5 @@
+//1에서 (p2승) reset //2에서 (p2승)reset
+
 `timescale 1ns / 1ps
 
 module baw_main_tb;
