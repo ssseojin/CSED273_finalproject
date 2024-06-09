@@ -86,8 +86,8 @@ module baw_main(
 
     encoder ec(i, handcard_input);
 
-    handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
-    handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
+    handout p1(cardselect, p1_card_, handout_p1_pulse, resetn, p1_handcard, p1_card);
+    handout p2(cardselect, p2_card_, handout_p2_pulse, resetn, p2_handcard, p2_card);
     handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
     card card1(cardselect, handout_p1_pulse, resetn, p1_card);
     handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
