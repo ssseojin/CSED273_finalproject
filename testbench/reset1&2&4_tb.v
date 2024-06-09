@@ -1,4 +1,4 @@
-//1에서 (p2승) reset //2에서 (p2승)reset
+//1에서 (p2승) reset //2에서 (p2승)reset //4에서 (무승부) reset
 
 `timescale 1ns / 1ps
 
