@@ -17,8 +17,7 @@ module baw_main_tb;
     wire [15:0] led;
     wire fin, resetn;//
     wire [1:0] matchresult;//
-    wire [3:0] round, win, lose, p1_handcard, p2_handcard;
-    wire [3:0]state;
+    wire [3:0] round, win, lose, p1_handcard, p2_handcard, state;
     wire scoreupdatepulse, winclk,loseclk;
 
     // Instantiate the Unit Under Test (UUT)
@@ -33,7 +32,6 @@ module baw_main_tb;
         .ssSel(ssSel),
         .ssDisp(ssDisp),
         .led(led),
-        .state(state)
     );
     assign fin=uut.finish1.fin;
     assign matchresult=uut.comparator.matchresult;
@@ -46,6 +44,7 @@ module baw_main_tb;
     assign scoreupdatepulse=uut.scoreupdate_pulse;
     assign winclk=uut.score.win2.clk;
     assign loseclk=uut.score.lose2.clk;
+    assign state=uut.wp.state;
     
     initial begin
         // Initialize Inputs
@@ -67,10 +66,10 @@ module baw_main_tb;
 //////round 0
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", state, matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);
         btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
-        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00010000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", state, matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p1_turn action
         #5;
         $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
@@ -160,7 +159,7 @@ module baw_main_tb;
         #5;
         $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnRight = 1; #5; btnRight = 0; // Move to p2_turn state
         #5;
-        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        sw = 16'b00010000000000000; // Set switch value
+        $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", state, matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);
         btnTop = 1; #5; btnTop = 0; // Return to bawp state with p2_turn action
         #5;
         $display("state:%b, matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);        btnCenter = 1; #5; btnCenter = 0; // Move to matchresult_print state
