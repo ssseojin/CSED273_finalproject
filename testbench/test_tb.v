@@ -67,7 +67,7 @@ module baw_main_tb;
 //////round 0
         btnTop = 1; #5; btnTop = 0; // Move to bawp state
         #5;
-        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);
+        $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b, state:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard, state);
         btnLeft = 1; #5; btnLeft = 0; // Move to p1_turn state
         #5;
         $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose, p1_handcard,p2_handcard);
