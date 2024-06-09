@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-//0530
+//06090923
 
 module baw_main(
     input clk,
@@ -88,7 +88,7 @@ module baw_main(
     // handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
     // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
     
-    //?��카드 ?��백여�??? + (카드 ?��?���??? ?���????)
+    //?占쏙옙移대 ?占쏙옙諛깆э??? + (移대 ?占쏙옙?占쏙옙占??? ?占쏙옙占????)
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
 
@@ -130,19 +130,19 @@ module baw_main(
             //     p1_handcard <= 9'b0;
             //     p2_handcard <= 9'b0;
             // end
-            default : cardselect <= 9'b0; // ?��?��?��?
+            default : cardselect <= 9'b0; // ?占쏙옙?占쏙옙?占쏙옙?
         endcase
     end
 
 
     //output sevenseg
-    //init state -> init 출력
-    //rasp state -> round win lose 출력
-    //bawp state -> p1black p1white p2black p2white 출력
-    //p1_turn state -> player 출력
+    //init state -> init 異�
+    //rasp state -> round win lose 異�
+    //bawp state -> p1black p1white p2black p2white 異�
+    //p1_turn state -> player 異�
     //p2_turn state
-    //matchresult state -> matchresult 출력
-    //gameresult state -> gameresult 출력
+    //matchresult state -> matchresult 異�
+    //gameresult state -> gameresult 異�
 
     wire [15:0] graphics;
     whattoprint wp(state, round, win, lose, p1_black, p1_white, p2_black, p2_white, gameresult, matchresult, graphics);
@@ -153,17 +153,17 @@ module baw_main(
         case(state)
             bawp: begin
                 led[12] = ~p1_handcard_isblack;
-                led[13] = p1_handcard_isblack; // ?��백여�??? 출력
+                led[13] = p1_handcard_isblack; // ?占쏙옙諛깆э??? 異�
                 led[14] = ~p2_handcard_isblack;
                 led[15] = p2_handcard_isblack;
                 led[11:0] = 12'b0;
-                //led?�� ?��?���??? ?���??? ?��?��
+                //led?占쏙옙 ?占쏙옙?占쏙옙占??? ?占쏙옙占??? ?占쏙옙?占쏙옙
             end
             p1_turn: begin
-                led[8:0] = p1_card_[8:0]; // p1_card 출력
+                led[8:0] = p1_card_[8:0]; // p1_card 異�
             end
             p2_turn: begin
-                led[8:0] = p2_card_[8:0]; // p2_card 출력
+                led[8:0] = p2_card_[8:0]; // p2_card 異�
             end
             default: begin
                 led[15:14] = matchresult; 
@@ -184,7 +184,7 @@ module baw_main(
 
 
     //FSM
-    always @(posedge clk) begin // * btnbottom 구현
+    always @(posedge clk) begin // * btnbottom 援ы
         case(state)
             init: begin // init state
                 if(btnCenter) begin
@@ -233,7 +233,7 @@ module baw_main(
                     state <= init;
             end
             matchresult_print: begin
-                if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�??
+                if(btnLeft) begin// 寃 ?占쏙옙?占쏙옙?占쏙옙?占쏙옙 寃곌낵異� state占??
 //                    state <= temp;
 
                      if(finish == 1) begin
@@ -247,7 +247,7 @@ module baw_main(
                 else if(btnBottom)
                     state <= init;
             end
-            gameresult_print:begin // 게임 ?��?�� ?��
+            gameresult_print:begin // 寃 ?占쏙옙?占쏙옙 ?占쏙옙
                 if(btnBottom)
                     state <= init;
             end
