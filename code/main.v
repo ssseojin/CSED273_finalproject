@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-//resetn finish
+//0530
 
 module baw_main(
     input clk,
@@ -12,7 +12,7 @@ module baw_main(
     input [15:0] sw,
     output [0:3] ssSel,
     output [7:0] ssDisp,
-    output [15:0] led
+    output reg[15:0] led
 );
 
     //parameter
@@ -23,36 +23,29 @@ module baw_main(
     parameter p2_turn = 3'b100;
     parameter matchresult_print = 3'b101;
     parameter gameresult_print = 3'b110;
+//    parameter temp = 3'b111;
     
     //variable
     reg [2:0] state;
+    reg [8:0] cardselect;
 
     wire resetn;
-    assign resetn = sw[15];
+    assign resetn = (~state[2] & ~state[1] & ~state[0]);
+
+    reg [8:0] p1_card, p2_card;
+    reg [3:0] p1_handcard, p2_handcard;
+
     wire [3:0] round, win, lose;
     wire finish;
     wire [1:0] matchresult, gameresult;
     wire [3:0] p1_black, p1_white, p2_black, p2_white;
-    wire p1_handcard_isblack;
-    wire p2_handcard_isblack;
-    
-    wire [8:0] cardselect;
 
-
-    wire [8:0] p1_card, p2_card;
-    wire [3:0] p1_handcard, p2_handcard;
-    assign p1_handcard_isblack = p1_handcard[0];
-    assign p2_handcard_isblack = p2_handcard[0];
 
     //combinational logic
     blackandwhite p1_card_conversion(p1_card, p1_black, p1_white);
     blackandwhite p2_card_conversion(p2_card, p2_black, p2_white);
     compare comparator(p1_handcard, p2_handcard, matchresult);
     isfinish finish1(round, win, lose, finish, gameresult);
-    
-    wire [15:0] graphics;
-    whattoprint wp(state, round, win, lose, p1_black, p1_white, p2_black, p2_white, gameresult, matchresult, graphics);
-    led_renderer renderer(graphics, clk, ssSel, ssDisp);
 
     //sequential logic
     wire scoreupdate_pulse;
@@ -60,13 +53,18 @@ module baw_main(
     wire handout_p2_pulse;
 
     assign scoreupdate_pulse = (state[2] & ~state[1] & state[0]); // 101
-    assign handout_p1_pulse = (~state[2] & state[1] & state[0]); // 011
-    assign handout_p2_pulse = (state[2] & ~state[1] & ~state[0]);// 100
+    assign handout_p1_pulse = ~(~state[2] & state[1] & state[0]); // 011
+    assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
     scoreupdate score(matchresult, scoreupdate_pulse, resetn, round, win, lose);
 
+
+    // handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
+    // handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
+
     wire [3:0] handcard_input;
     wire [15:0] i;
+
     assign i[0] = cardselect[0];
     assign i[1] = cardselect[1];
     assign i[2] = cardselect[2];
@@ -85,13 +83,17 @@ module baw_main(
     assign i[15] = 0;
 
     encoder ec(i, handcard_input);
+    // handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
+    // card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
+    // handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
+    // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
+    
+    //?��카드 ?��백여�??? + (카드 ?��?���??? ?���????)
+    wire p1_handcard_isblack;
+    wire p2_handcard_isblack;
 
-    handout p1(cardselect, p1_card_, handout_p1_pulse, resetn, p1_handcard, p1_card);
-    handout p2(cardselect, p2_card_, handout_p2_pulse, resetn, p2_handcard, p2_card);
-    handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
-    card card1(cardselect, handout_p1_pulse, resetn, p1_card);
-    handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
-    card card2(cardselect, handout_p2_pulse, resetn, p2_card);
+    assign p1_handcard_isblack = p1_handcard[0];
+    assign p2_handcard_isblack = p2_handcard[0];
 
     wire [8:0] p1_card_;
     assign p1_card_[0] = p1_card[0] & ~cardselect[0];
@@ -115,58 +117,80 @@ module baw_main(
     assign p2_card_[8] = p2_card[8] & ~cardselect[8];
     
     // switch handcard input
-    // always @(posedge clk) begin
-    //     case (state)
-    //         p1_turn: begin 
-    //             cardselect <= sw[8:0];
-    //         end
-    //         p2_turn: begin
-    //             cardselect <= sw[8:0]; 
-    //         end
-    //         default : begin 
-    //             cardselect <= 9'b0;
-    //         end
-    //     endcase
-    // end
-
-    assign cardselect[8]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[8];
-    assign cardselect[7]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[7];
-    assign cardselect[6]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[6];
-    assign cardselect[5]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[5];
-    assign cardselect[4]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[4];
-    assign cardselect[3]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[3];
-    assign cardselect[2]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[2];
-    assign cardselect[1]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[1];
-    assign cardselect[0]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[0];
+    always @(posedge clk) begin
+        case (state)
+            p1_turn: begin 
+                cardselect <= sw[8:0]; // cardselect
+                
+            end
+            p2_turn: begin
+                cardselect <= sw[8:0]; 
+            end
+            // matchresult: begin
+            //     p1_handcard <= 9'b0;
+            //     p2_handcard <= 9'b0;
+            // end
+            default : cardselect <= 9'b0; // ?��?��?��?
+        endcase
+    end
 
 
-    
+    //output sevenseg
+    //init state -> init 출력
+    //rasp state -> round win lose 출력
+    //bawp state -> p1black p1white p2black p2white 출력
+    //p1_turn state -> player 출력
+    //p2_turn state
+    //matchresult state -> matchresult 출력
+    //gameresult state -> gameresult 출력
 
-    assign led[0]=(~state[2]&state[1]&state[0])&p1_card_[0] | (state[2]&~state[1]&~state[0])&p2_card_[0];
-    assign led[1]=(~state[2]&state[1]&state[0])&p1_card_[1] | (state[2]&~state[1]&~state[0])&p2_card_[1];
-    assign led[2]=(~state[2]&state[1]&state[0])&p1_card_[2] | (state[2]&~state[1]&~state[0])&p2_card_[2];
-    assign led[3]=(~state[2]&state[1]&state[0])&p1_card_[3] | (state[2]&~state[1]&~state[0])&p2_card_[3];
-    assign led[4]=(~state[2]&state[1]&state[0])&p1_card_[4] | (state[2]&~state[1]&~state[0])&p2_card_[4];
-    assign led[5]=(~state[2]&state[1]&state[0])&p1_card_[5] | (state[2]&~state[1]&~state[0])&p2_card_[5];
-    assign led[6]=(~state[2]&state[1]&state[0])&p1_card_[6] | (state[2]&~state[1]&~state[0])&p2_card_[6];
-    assign led[7]=(~state[2]&state[1]&state[0])&p1_card_[7] | (state[2]&~state[1]&~state[0])&p2_card_[7];
-    assign led[8]=(~state[2]&state[1]&state[0])&p1_card_[8] | (state[2]&~state[1]&~state[0])&p2_card_[8];
-    assign led[12] = ~p1_handcard_isblack;
-    assign led[13] = p1_handcard_isblack; 
-    assign led[14] = ~p2_handcard_isblack;
-    assign led[15] = p2_handcard_isblack;
+    wire [15:0] graphics;
+    whattoprint wp(state, round, win, lose, p1_black, p1_white, p2_black, p2_white, gameresult, matchresult, graphics);
+    led_renderer renderer(graphics, clk, ssSel, ssDisp);
+
+    //output led
+    always @(posedge clk) begin
+        case(state)
+            bawp: begin
+                led[12] = ~p1_handcard_isblack;
+                led[13] = p1_handcard_isblack; // ?��백여�??? 출력
+                led[14] = ~p2_handcard_isblack;
+                led[15] = p2_handcard_isblack;
+                led[11:0] = 12'b0;
+                //led?�� ?��?���??? ?���??? ?��?��
+            end
+            p1_turn: begin
+                led[8:0] = p1_card_[8:0]; // p1_card 출력
+            end
+            p2_turn: begin
+                led[8:0] = p2_card_[8:0]; // p2_card 출력
+            end
+            default: begin
+                led[15:14] = matchresult; 
+                led[13:12] = gameresult;
+                led[11] = finish;
+                led[10] = scoreupdate_pulse;
+                led[9] = resetn;
+                led[3:0] = p1_handcard;
+                led[7:4] = p2_handcard;
+            end
+        endcase
+    end
 
     //initialize register
     initial begin
         state <= init;
     end
 
+
     //FSM
-    always @(posedge clk) begin
+    always @(posedge clk) begin // * btnbottom 구현
         case(state)
             init: begin // init state
                 if(btnCenter) begin
                     state <= rasp;
+                    p1_card <= 9'b111111111;
+                    p2_card <= 9'b111111111;
                 end
             end
             rasp: begin // Round and Score print state
@@ -185,41 +209,56 @@ module baw_main(
                     state <= matchresult_print;
                 else if(btnLeft)
                     state <= p1_turn;
+                    
                 else if(btnRight)
                     state <= p2_turn;
                 else if(btnBottom)
                     state <= init;
             end
-            p1_turn: begin
+            
+            p1_turn: begin // p1_turn
                 if(btnTop) begin
                     state <= bawp;
-                    // p1_card <= p1_card_;
-                    // p1_handcard <= handcard_input;
+                    p1_card <= p1_card_;
+                    p1_handcard <= handcard_input;
                 end
                 else if(btnBottom)
                     state <= init;
             end
-            p2_turn: begin
+            p2_turn: begin // p2_turn
                 if(btnTop) begin
                     state <= bawp;
-                    // p2_card <= p2_card_;
-                    // p2_handcard <= handcard_input;
+                    p2_card <= p2_card_;
+                    p2_handcard <= handcard_input;
                 end
                 else if(btnBottom)
                     state <= init;
             end
-            matchresult_print:begin
-                if(btnLeft) begin
+            matchresult_print: begin
+                if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�??
                     state <= rasp;
+//                    else begin
+//                        state <= rasp;
+//                    end
+                    
                 end
                 else if(btnBottom)
                     state <= init;
             end
-            gameresult_print:begin
+            gameresult_print:begin // 게임 ?��?�� ?��
                 if(btnBottom)
                     state <= init;
             end
+//            temp: begin 
+//            if(finish == 1) begin
+//                state <= gameresult_print;
+//            end
+//                    else begin
+//                        state <= rasp;
+//                    end
+//            end
         endcase
     end
+
 
 endmodule
