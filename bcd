@@ -1,0 +1,26 @@
+
+module bcd_to_7seg (
+  input [3:0] bcd,
+  output reg [7:0] r
+);
+
+  wire a, b, c, d;
+  wire [7:0] x;
+
+  assign a = bcd[3];
+  assign b = bcd[2];
+  assign c = bcd[1];
+  assign d = bcd[0];
+
+  assign x[7] = ~(a & b & c & ~d);
+  assign x[6] = ~a & ~b & ~c | b & c & d | a & b & c;
+  assign x[5] = c & d | a & c | c & ~b | ~a & ~ b & d | a & b & ~d;
+  assign x[4] = ~a & d | ~a & b & ~c | b & c & d | ~b & ~c & d;
+  assign x[3] = b & ~c & ~d | a & b | a & c & ~d | b & c & d | ~a & ~b & ~c & d;
+  assign x[2] = a & b & ~c & ~d | a & b & c & d | ~a & ~b & c & ~d;
+  assign x[1] = a & b & ~c & ~d | ~a & b & ~c & d | a & c & ~d | a & b & c | b & c & ~d;
+  assign x[0] = b & ~c & ~d | a & c | ~a & ~b & ~c & ~d;
+
+  assign r = x;
+
+endmodule
