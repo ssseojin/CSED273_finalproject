@@ -18,6 +18,8 @@ module baw_main_tb;
     wire fin, resetn;//
     wire [1:0] matchresult;//
     wire [3:0] round, win, lose, p1_handcard, p2_handcard;
+    wire [3:0]state;
+    wire scoreupdatepulse, winclk,loseclk;
 
     // Instantiate the Unit Under Test (UUT)
     baw_main uut (
@@ -40,7 +42,10 @@ module baw_main_tb;
     assign resetn=uut.score.resetn;
     assign p1_handcard=uut.comparator.p1_handcard;
     assign p2_handcard=uut.comparator.p2_handcard;
-
+    assign state=uut.state;
+    assign scoreupdatepulse=uut.scoreupdate_pulse;
+    assign winclk=uut.score.win2.clk;
+    assign loseclk=uut.score.lose2.clk;
     
     initial begin
         // Initialize Inputs
