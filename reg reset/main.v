@@ -1,6 +1,5 @@
 `timescale 1ns / 1ps
 
-//06090923
 
 module baw_main(
     input clk,
@@ -29,8 +28,8 @@ module baw_main(
     reg [2:0] state;
     reg [8:0] cardselect;
 
-    wire resetn;
-    assign resetn = (~state[2] & ~state[1] & ~state[0]);
+    reg resetn;
+    //assign resetn = (~state[2] & ~state[1] & ~state[0]);
 
     reg [8:0] p1_card, p2_card;
     reg [3:0] p1_handcard, p2_handcard;
@@ -180,6 +179,7 @@ module baw_main(
     //initialize register
     initial begin
         state <= init;
+        resetn<=0;
     end
 
 
@@ -200,6 +200,7 @@ module baw_main(
                     p2_handcard <= 4'b0000;
                 end
                 else if(btnBottom)
+                    resetn<=1;
                     state <= init;
             end
             bawp: begin // Black and White print state
@@ -211,6 +212,7 @@ module baw_main(
                 else if(btnRight)
                     state <= p2_turn;
                 else if(btnBottom)
+                    resetn<=1;
                     state <= init;
             end
             
@@ -221,7 +223,9 @@ module baw_main(
                     p1_handcard <= handcard_input;
                 end
                 else if(btnBottom)
+                    resetn<=1;
                     state <= init;
+                   
             end
             p2_turn: begin // p2_turn
                 if(btnTop) begin
@@ -230,6 +234,7 @@ module baw_main(
                     p2_handcard <= handcard_input;
                 end
                 else if(btnBottom)
+                    resetn<=1;
                     state <= init;
             end
             matchresult_print: begin
@@ -245,10 +250,12 @@ module baw_main(
                     
                 end
                 else if(btnBottom)
+                    resetn<=1;
                     state <= init;
             end
             gameresult_print:begin // 寃 ?占쏙옙?占쏙옙 ?占쏙옙
                 if(btnBottom)
+                    resetn<=1;
                     state <= init;
             end
 //            temp: begin 
