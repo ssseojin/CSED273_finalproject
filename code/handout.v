@@ -31,8 +31,9 @@ module handout(
     wire [3:0] handcard_input;
 
     encoder encoder0(i, handcard_input);
+
     handcard handcard0(handcard_input, handout_pulse, resetn, handcard);
-    card card0(cardselect, handout_pulse, reset_n, card);
+    card card0(cardselect, handout_pulse, resetn, card);
 
 endmodule
 
