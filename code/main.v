@@ -12,7 +12,7 @@ module baw_main(
     input [15:0] sw,
     output [0:3] ssSel,
     output [7:0] ssDisp,
-    output reg[15:0] led
+    output [15:0] led
 );
 
     //parameter
@@ -29,8 +29,9 @@ module baw_main(
     reg [2:0] state;
     reg [8:0] cardselect;
 
-    wire resetn;
-    assign resetn = (~state[2] & ~state[1] & ~state[0]);
+//    wire resetn;
+//    assign resetn = ~state[2] & ~state[1] & ~state[0];
+    assign resetn = sw[15];
 
     reg [8:0] p1_card, p2_card;
     reg [3:0] p1_handcard, p2_handcard;
@@ -149,33 +150,47 @@ module baw_main(
     led_renderer renderer(graphics, clk, ssSel, ssDisp);
 
     //output led
-    always @(posedge clk) begin
-        case(state)
-            bawp: begin
-                led[12] = ~p1_handcard_isblack;
-                led[13] = p1_handcard_isblack; // ?��백여�??? 출력
-                led[14] = ~p2_handcard_isblack;
-                led[15] = p2_handcard_isblack;
-                led[11:0] = 12'b0;
-                //led?�� ?��?���??? ?���??? ?��?��
-            end
-            p1_turn: begin
-                led[8:0] = p1_card_[8:0]; // p1_card 출력
-            end
-            p2_turn: begin
-                led[8:0] = p2_card_[8:0]; // p2_card 출력
-            end
-            default: begin
-                led[15:14] = matchresult; 
-                led[13:12] = gameresult;
-                led[11] = finish;
-                led[10] = scoreupdate_pulse;
-                led[9] = resetn;
-                led[3:0] = p1_handcard;
-                led[7:4] = p2_handcard;
-            end
-        endcase
-    end
+//    always @(posedge clk) begin
+//        case(state)
+//            bawp: begin
+//                led[12] = ~p1_handcard_isblack;
+//                led[13] = p1_handcard_isblack; // ?��백여�??? 출력
+//                led[14] = ~p2_handcard_isblack;
+//                led[15] = p2_handcard_isblack;
+//                led[11:0] = 12'b0;
+//                //led?�� ?��?���??? ?���??? ?��?��
+//            end
+//            p1_turn: begin
+//                led[8:0] = p1_card_[8:0]; // p1_card 출력
+//            end
+//            p2_turn: begin
+//                led[8:0] = p2_card_[8:0]; // p2_card 출력
+//            end
+//            default: begin
+//                led[15:14] = matchresult; 
+//                led[13:12] = gameresult;
+//                led[11] = finish;
+//                led[10] = scoreupdate_pulse;
+//                led[9] = resetn;
+//                led[3:0] = p1_handcard;
+//                led[7:4] = p2_handcard;
+//            end
+//        endcase
+//    end
+
+    assign led[0]=(~state[2]&state[1]&state[0])&p1_card_[0] | (state[2]&~state[1]&~state[0])&p2_card_[0];
+    assign led[1]=(~state[2]&state[1]&state[0])&p1_card_[1] | (state[2]&~state[1]&~state[0])&p2_card_[1];
+    assign led[2]=(~state[2]&state[1]&state[0])&p1_card_[2] | (state[2]&~state[1]&~state[0])&p2_card_[2];
+    assign led[3]=(~state[2]&state[1]&state[0])&p1_card_[3] | (state[2]&~state[1]&~state[0])&p2_card_[3];
+    assign led[4]=(~state[2]&state[1]&state[0])&p1_card_[4] | (state[2]&~state[1]&~state[0])&p2_card_[4];
+    assign led[5]=(~state[2]&state[1]&state[0])&p1_card_[5] | (state[2]&~state[1]&~state[0])&p2_card_[5];
+    assign led[6]=(~state[2]&state[1]&state[0])&p1_card_[6] | (state[2]&~state[1]&~state[0])&p2_card_[6];
+    assign led[7]=(~state[2]&state[1]&state[0])&p1_card_[7] | (state[2]&~state[1]&~state[0])&p2_card_[7];
+    assign led[8]=(~state[2]&state[1]&state[0])&p1_card_[8] | (state[2]&~state[1]&~state[0])&p2_card_[8];
+    assign led[12] = ~p1_handcard_isblack;
+    assign led[13] = p1_handcard_isblack; 
+    assign led[14] = ~p2_handcard_isblack;
+    assign led[15] = p2_handcard_isblack;
 
     //initialize register
     initial begin

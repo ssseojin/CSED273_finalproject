@@ -29,7 +29,7 @@ module isfinish(
     adder islose( win,_8r,0, w8r, carry2 );
     magnitude_comparator compare2(lose, w8r,checklose);//->ë­ê? ?” ?°ì§? ê²°ê³¼?— ?”°?¼ fin ì¡°ì •
     // ??¸ê°?
-    assign fin=(checkwin[1]&~checkwin[0])|(checklose[1]&~checklose[0])|(round[3]&~round[2]&~round[1]&~round[0]);
+    assign fin=(checkwin[1]&~checkwin[0])|(checklose[1]&~checklose[0])|(round[3]&~round[2]&~round[1]&round[0]);
     //?Š¹?ì¶œë ¥
     
     //assign fin = round[3] & ~round[2] & ~round[1] & ~round[0];
