@@ -26,11 +26,11 @@ module baw_main(
     
     //variable
     reg [2:0] state;
-    reg [8:0] cardselect;
 
     wire resetn;
     assign resetn = sw[15];
 
+    reg [8:0] cardselect;
     reg [8:0] p1_card, p2_card;
     reg [3:0] p1_handcard, p2_handcard;
 
@@ -39,11 +39,22 @@ module baw_main(
     wire [1:0] matchresult, gameresult;
     wire [3:0] p1_black, p1_white, p2_black, p2_white;
 
+    
+    wire p1_handcard_isblack;
+    wire p2_handcard_isblack;
+
+    assign p1_handcard_isblack = p1_handcard[0];
+    assign p2_handcard_isblack = p2_handcard[0];
+
     //combinational logic
     blackandwhite p1_card_conversion(p1_card, p1_black, p1_white);
     blackandwhite p2_card_conversion(p2_card, p2_black, p2_white);
     compare comparator(p1_handcard, p2_handcard, matchresult);
     isfinish finish1(round, win, lose, finish, gameresult);
+    
+    wire [15:0] graphics;
+    whattoprint wp(state, round, win, lose, p1_black, p1_white, p2_black, p2_white, gameresult, matchresult, graphics);
+    led_renderer renderer(graphics, clk, ssSel, ssDisp);
 
     //sequential logic
     wire scoreupdate_pulse;
@@ -55,13 +66,11 @@ module baw_main(
     assign handout_p2_pulse = ~(state[2] & ~state[1] & ~state[0]);// 100
     
     scoreupdate score(matchresult, scoreupdate_pulse, resetn, round, win, lose);
-
     // handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
     // handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
 
     wire [3:0] handcard_input;
     wire [15:0] i;
-
     assign i[0] = cardselect[0];
     assign i[1] = cardselect[1];
     assign i[2] = cardselect[2];
@@ -80,16 +89,11 @@ module baw_main(
     assign i[15] = 0;
 
     encoder ec(i, handcard_input);
+
     // handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
     // card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
     // handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
     // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
-    
-    wire p1_handcard_isblack;
-    wire p2_handcard_isblack;
-
-    assign p1_handcard_isblack = p1_handcard[0];
-    assign p2_handcard_isblack = p2_handcard[0];
 
     wire [8:0] p1_card_;
     assign p1_card_[0] = p1_card[0] & ~cardselect[0];
@@ -127,37 +131,19 @@ module baw_main(
         endcase
     end
 
-    wire [15:0] graphics;
-    whattoprint wp(state, round, win, lose, p1_black, p1_white, p2_black, p2_white, gameresult, matchresult, graphics);
-    led_renderer renderer(graphics, clk, ssSel, ssDisp);
-
-    //output led
-    always @(posedge clk) begin
-        case(state)
-            bawp: begin
-                led[12] = ~p1_handcard_isblack;
-                led[13] = p1_handcard_isblack;
-                led[14] = ~p2_handcard_isblack;
-                led[15] = p2_handcard_isblack;
-                led[11:0] = 12'b0;
-            end
-            p1_turn: begin
-                led[8:0] = p1_card_[8:0];
-            end
-            p2_turn: begin
-                led[8:0] = p2_card_[8:0];
-            end
-            default: begin
-                led[15:14] = matchresult; 
-                led[13:12] = gameresult;
-                led[11] = finish;
-                led[10] = scoreupdate_pulse;
-                led[9] = resetn;
-                led[3:0] = p1_handcard;
-                led[7:4] = p2_handcard;
-            end
-        endcase
-    end
+    assign led[0]=(~state[2]&state[1]&state[0])&p1_card_[0] | (state[2]&~state[1]&~state[0])&p2_card_[0];
+    assign led[1]=(~state[2]&state[1]&state[0])&p1_card_[1] | (state[2]&~state[1]&~state[0])&p2_card_[1];
+    assign led[2]=(~state[2]&state[1]&state[0])&p1_card_[2] | (state[2]&~state[1]&~state[0])&p2_card_[2];
+    assign led[3]=(~state[2]&state[1]&state[0])&p1_card_[3] | (state[2]&~state[1]&~state[0])&p2_card_[3];
+    assign led[4]=(~state[2]&state[1]&state[0])&p1_card_[4] | (state[2]&~state[1]&~state[0])&p2_card_[4];
+    assign led[5]=(~state[2]&state[1]&state[0])&p1_card_[5] | (state[2]&~state[1]&~state[0])&p2_card_[5];
+    assign led[6]=(~state[2]&state[1]&state[0])&p1_card_[6] | (state[2]&~state[1]&~state[0])&p2_card_[6];
+    assign led[7]=(~state[2]&state[1]&state[0])&p1_card_[7] | (state[2]&~state[1]&~state[0])&p2_card_[7];
+    assign led[8]=(~state[2]&state[1]&state[0])&p1_card_[8] | (state[2]&~state[1]&~state[0])&p2_card_[8];
+    assign led[12] = ~p1_handcard_isblack;
+    assign led[13] = p1_handcard_isblack; 
+    assign led[14] = ~p2_handcard_isblack;
+    assign led[15] = p2_handcard_isblack;
 
     //initialize register
     initial begin
