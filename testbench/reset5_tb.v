@@ -207,7 +207,7 @@ module baw_main_tb;
         btnLeft = 1; #10; btnLeft = 0; // Depending on finish signal, move to gameresult_print or rasp state
         #10;
         $display("matchresult: %b, clk: %b, ssSel: %b, fin:&b, reset:%b, round:%b, win:%b,lose:%b", matchresult, clk, ssSel, fin, resetn, round, win, lose);
-        btnBottom = 1; #10; btnBottom = 0; // Depending on finish signal, move to gameresult_print or rasp state
+        sw = 16'b00000000000000001; // Depending on finish signal, move to gameresult_print or rasp state
         #10;
 
 
