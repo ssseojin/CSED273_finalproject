@@ -1,12 +1,3 @@
-// ??впиЎ?впиЎ??впиЎ?впиЎ??впиЎ?впиЎ ??впиЎ?впиЎ??впиЎ?впиЎ?вп?? matchresult??впиЎ?впиЎ ??впиЎ?впиЎ??впиЎ?впиЎ ??впиЎ?впиЎ??впиЎ?впиЎ??впиЎ?впиЎ?вп??
-// round counter, win counter, lose counter ??впиЎ?впиЎ??впиЎ?впиЎ??впиЎ?впиЎ??впиЎ?впиЎ
-
-// Lab6??впиЎ?впиЎ counter ?игбз?"? ??впиЎ?впиЎ?вп??
-
-// round??впиЎ?впиЎ ??впиЎ?впиЎ??впиЎ?впиЎ??впиЎ?впиЎ ??впиЎ?впиЎ??впиЎ?впиЎ??впиЎ?впиЎ?б╫???в┤ 1 ?в╥"?впиЎ?
-// p1 ??впиЎ?впиЎ??впиЎ?впиЎ?вп?? win counter 1 ?в╥"?впиЎ?
-// p2 ??впиЎ?впиЎ??впиЎ?впиЎ?вп?? lose counter 1 ?в╥"?впиЎ?
-
 module scoreupdate(
     input [1:0] matchresult,
     input clk,
@@ -17,8 +8,8 @@ module scoreupdate(
 );
     wire win_clk, lose_clk;
 
-    assign win_clk = (~matchresult[0] & matchresult[1] & clk); // 10 ??впиЎ?впиЎ
-    assign lose_clk = (matchresult[0] & matchresult[1] & clk); // 11 ??впиЎ?впиЎ
+    assign win_clk = (~matchresult[0] & matchresult[1] & clk);
+    assign lose_clk = (matchresult[0] & matchresult[1] & clk);
 
     counter round2(clk, resetn, round);
     counter win2(win_clk, resetn, win);
@@ -26,14 +17,6 @@ module scoreupdate(
 
 endmodule
 
-
-// module edge_tirgger_JKFF(input j, input k, input clk, input resetn, output reg q, output reg q_); endmodule
-// module edge_trigger_DFF(input d, input clk, output q, output q_); endmodule
-// module edge_trigger_TFF(input t, input clk, input resetn, output q, output q_); endmodule
-// module counter(input clk, input resetn, output[3:0] count); endmodule
-
-
-// FF
 module edge_trigger_JKFF(input j, input k, input clk, input resetn, output reg q, output reg q_);  
     
     initial begin
@@ -42,9 +25,6 @@ module edge_trigger_JKFF(input j, input k, input clk, input resetn, output reg q
     end
        
     always @(negedge clk or posedge resetn) begin
-//        q = ~resetn & (j&~q | ~k&q);
-//        q_ = resetn | ~q;
-
         if(resetn) begin
             q = 0;
             q_ = 1;
@@ -65,8 +45,6 @@ module edge_trigger_JKFFp(input j, input k, input clk, input resetn, output reg 
     end
        
     always @(negedge clk or posedge resetn) begin
-//        q = resetn | (j&~q | ~k&q);
-//        q_ = ~resetn & ~q;
         if(resetn) begin
             q = 1;
             q_ = 0;
@@ -78,8 +56,6 @@ module edge_trigger_JKFFp(input j, input k, input clk, input resetn, output reg 
     end
     
 endmodule
-
-
 
 module edge_trigger_DFF(input d, input clk, input resetn, output q, output q_);   
     
@@ -99,7 +75,6 @@ module edge_trigger_TFFp(input t, input clk, input resetn, output q, output q_);
 
 endmodule
 
-// Counter(4-bit)
 module counter(input clk, input resetn, output [3:0] count);
 
     wire [3:0] _count;

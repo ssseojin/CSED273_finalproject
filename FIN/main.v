@@ -1,6 +1,6 @@
 `timescale 1ns / 1ps
 
-//0530
+// 1015
 
 module baw_main(
     input clk,
@@ -23,14 +23,11 @@ module baw_main(
     parameter p2_turn = 3'b100;
     parameter matchresult_print = 3'b101;
     parameter gameresult_print = 3'b110;
-//    parameter temp = 3'b111;
     
     //variable
     reg [2:0] state;
     reg [8:0] cardselect;
 
-//    wire resetn;
-//    assign resetn = ~state[2] & ~state[1] & ~state[0];
     assign resetn = sw[15];
 
     reg [8:0] p1_card, p2_card;
@@ -85,11 +82,10 @@ module baw_main(
 
     encoder ec(i, handcard_input);
     // handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
-    // card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
+    // card card1(cardselect, handout_p1_pulse, resetn, p1_card);
     // handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
-    // card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
+    // card card2(cardselect, handout_p2_pulse, resetn, p2_card);
     
-    //?��카드 ?��백여�??? + (카드 ?��?���??? ?���????)
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
 
@@ -122,61 +118,17 @@ module baw_main(
         case (state)
             p1_turn: begin 
                 cardselect <= sw[8:0]; // cardselect
-                
             end
             p2_turn: begin
                 cardselect <= sw[8:0]; 
             end
-            // matchresult: begin
-            //     p1_handcard <= 9'b0;
-            //     p2_handcard <= 9'b0;
-            // end
-            default : cardselect <= 9'b0; // ?��?��?��?
+            default : cardselect <= 9'b0;
         endcase
     end
-
-
-    //output sevenseg
-    //init state -> init 출력
-    //rasp state -> round win lose 출력
-    //bawp state -> p1black p1white p2black p2white 출력
-    //p1_turn state -> player 출력
-    //p2_turn state
-    //matchresult state -> matchresult 출력
-    //gameresult state -> gameresult 출력
 
     wire [15:0] graphics;
     whattoprint wp(state, round, win, lose, p1_black, p1_white, p2_black, p2_white, gameresult, matchresult, graphics);
     led_renderer renderer(graphics, clk, ssSel, ssDisp);
-
-    //output led
-//    always @(posedge clk) begin
-//        case(state)
-//            bawp: begin
-//                led[12] = ~p1_handcard_isblack;
-//                led[13] = p1_handcard_isblack; // ?��백여�??? 출력
-//                led[14] = ~p2_handcard_isblack;
-//                led[15] = p2_handcard_isblack;
-//                led[11:0] = 12'b0;
-//                //led?�� ?��?���??? ?���??? ?��?��
-//            end
-//            p1_turn: begin
-//                led[8:0] = p1_card_[8:0]; // p1_card 출력
-//            end
-//            p2_turn: begin
-//                led[8:0] = p2_card_[8:0]; // p2_card 출력
-//            end
-//            default: begin
-//                led[15:14] = matchresult; 
-//                led[13:12] = gameresult;
-//                led[11] = finish;
-//                led[10] = scoreupdate_pulse;
-//                led[9] = resetn;
-//                led[3:0] = p1_handcard;
-//                led[7:4] = p2_handcard;
-//            end
-//        endcase
-//    end
 
     assign led[0]=(~state[2]&state[1]&state[0])&p1_card_[0] | (state[2]&~state[1]&~state[0])&p2_card_[0];
     assign led[1]=(~state[2]&state[1]&state[0])&p1_card_[1] | (state[2]&~state[1]&~state[0])&p2_card_[1];
@@ -250,28 +202,16 @@ module baw_main(
                     state <= init;
             end
             matchresult_print: begin
-                if(btnLeft) begin// 게임 ?��?��?��?�� 결과출력 state�??
+                if(btnLeft) begin
                     state <= rasp;
-//                    else begin
-//                        state <= rasp;
-//                    end
-                    
                 end
                 else if(btnBottom)
                     state <= init;
             end
-            gameresult_print:begin // 게임 ?��?�� ?��
+            gameresult_print:begin
                 if(btnBottom)
                     state <= init;
             end
-//            temp: begin 
-//            if(finish == 1) begin
-//                state <= gameresult_print;
-//            end
-//                    else begin
-//                        state <= rasp;
-//                    end
-//            end
         endcase
     end
 

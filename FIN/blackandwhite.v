@@ -1,13 +1,12 @@
-// blackandwhite : ?”Œ? ˆ?´?–´ ?‚¨??ì¹´ë“œ ì¤? ?‘ë°? ì¹´ë“œ ê°œìˆ˜ ê³„ì‚°?•˜?Š” ëª¨ë“ˆ
+
 
 module blackandwhite(
-    input [8:0] p_card, // 2ì§„ìˆ˜ 9ë¹„íŠ¸ , ê°? ?žë¦¿ìˆ˜ê°’ì´ ê·? ?žë¦¿ìˆ˜ ì¹´ë“œ ?œ ë¬? ?‘œ?˜„
-    output [2:0] p_black, // ?‘ì¹´ë“œ ê°œìˆ˜ ì¶œë ¥
-    output [2:0] p_white // ë°±ì¹´?“œ ê°œìˆ˜ ì¶œë ¥
+    input [8:0] p_card, 
+    output [2:0] p_black, 
+    output [2:0] p_white 
 );
     wire [4:0]white;
     count blackcount({p_card[0], p_card[2], p_card[4], p_card[6], p_card[8]}, p_black);
-    // card 0 2 4 6 8 ì¤‘ì— 1ê°œìˆ˜ê°? ?‘ì¹´ë“œ ê°œìˆ˜
 
     assign white[4]=p_card[1];
     assign white[3]=p_card[3];
@@ -16,7 +15,6 @@ module blackandwhite(
     assign white[0]=0;
 
     count whitecount(white, p_white);
-    // card 1 3 5 7 ì¤‘ì— 1ê°œìˆ˜ê°? ë°±ì¹´?“œ ê°œìˆ˜
 
 
 endmodule
@@ -33,10 +31,7 @@ module count(
     
     count_ones pt1 (in[4:2], cnt_p1);
     count_ones pt2 (in_w_0, cnt_p2);
-    //count_ones pt2 ({in[1:0],0 }, cnt_p2);
     plus p(cnt_p1, cnt_p2, count);
-
-    // 5-bit count_ones module - 5ë¹„íŠ¸ ?ž…? ¥ë°›ì•„?„œ 1 ê°œìˆ˜ ?„¸?Š” ëª¨ë“ˆ
 
 endmodule
 

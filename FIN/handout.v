@@ -7,9 +7,6 @@ module handout(
     output [3:0] handcard,
     output [8:0] card 
 );
-    // 16:4 encoderë¡? cardselect?•œê±? handcard 4ë¹„íŠ¸ë¡? ë³??™˜
-    // handcard D FFë¡? ???¥
-    // card T FFë¡? ???¥ -> ì´ˆê¸°?™”ë¥? ?–´?–»ê²Œí•˜ì§? ..? reset?´ ?‹¤ë¥´ê²Œ ?˜?Š” ë²„ì „?˜ FFë¥? ë§Œë“¤?–´ì¤˜ì•¼?•¨
     wire [15:0] i;
     assign i[0] = cardselect[0];
     assign i[1] = cardselect[1];
@@ -84,10 +81,6 @@ module handcard(
     assign handcard = q;
 
 endmodule
-
-
-
-
 
 //////////////////
 

@@ -84,14 +84,3 @@ module led_renderer (
     end
   end
 endmodule
-
-
-
-//output sevenseg
-//init state -> init ì¶œë ¥
-//rasp state -> round win lose ì¶œë ¥
-//bawp state -> p1black p1white p2black p2white ì¶œë ¥, led?— ?ƒˆ?Š”ì§??—¬ë¶?, ?‘ë°±ì—¬ë¶? ì¶œë ¥
-//p1_turn state -> player ì¶œë ¥, led?— p1_card ì¶œë ¥
-//p2_turn state
-//matchresult state -> matchresult ì¶œë ¥
-//gameresult state -> gameresult ì¶œë ¥
