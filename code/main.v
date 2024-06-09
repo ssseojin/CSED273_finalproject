@@ -29,18 +29,16 @@ module baw_main(
 
     wire resetn;
     assign resetn = sw[15];
-
-
     wire [3:0] round, win, lose;
     wire finish;
     wire [1:0] matchresult, gameresult;
     wire [3:0] p1_black, p1_white, p2_black, p2_white;
-
-    
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
     
-    reg [8:0] cardselect;
+    wire [8:0] cardselect;
+
+
     wire [8:0] p1_card, p2_card;
     wire [3:0] p1_handcard, p2_handcard;
     assign p1_handcard_isblack = p1_handcard[0];
@@ -87,13 +85,6 @@ module baw_main(
     assign i[15] = 0;
 
     encoder ec(i, handcard_input);
-    
-
-    
-    // reg [8:0] cardselect;
-    // reg [8:0] p1_card, p2_card;
-    // reg [3:0] p1_handcard, p2_handcard;
-    
 
     handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
     handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
@@ -124,19 +115,32 @@ module baw_main(
     assign p2_card_[8] = p2_card[8] & ~cardselect[8];
     
     // switch handcard input
-    always @(posedge clk) begin
-        case (state)
-            p1_turn: begin 
-                cardselect <= sw[8:0];
-            end
-            p2_turn: begin
-                cardselect <= sw[8:0]; 
-            end
-            default : begin 
-                cardselect <= 9'b0;
-            end
-        endcase
-    end
+    // always @(posedge clk) begin
+    //     case (state)
+    //         p1_turn: begin 
+    //             cardselect <= sw[8:0];
+    //         end
+    //         p2_turn: begin
+    //             cardselect <= sw[8:0]; 
+    //         end
+    //         default : begin 
+    //             cardselect <= 9'b0;
+    //         end
+    //     endcase
+    // end
+
+    assign cardselect[8]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[8];
+    assign cardselect[7]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[7];
+    assign cardselect[6]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[6];
+    assign cardselect[5]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[5];
+    assign cardselect[4]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[4];
+    assign cardselect[3]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[3];
+    assign cardselect[2]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[2];
+    assign cardselect[1]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[1];
+    assign cardselect[0]=(~state[2]&state[1]&state[0] |state[2]&~state[1]&~state[0])& sw[0];
+
+
+    
 
     assign led[0]=(~state[2]&state[1]&state[0])&p1_card_[0] | (state[2]&~state[1]&~state[0])&p2_card_[0];
     assign led[1]=(~state[2]&state[1]&state[0])&p1_card_[1] | (state[2]&~state[1]&~state[0])&p2_card_[1];
