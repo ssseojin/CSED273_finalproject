@@ -39,7 +39,10 @@ module baw_main(
     
     wire p1_handcard_isblack;
     wire p2_handcard_isblack;
-
+    
+    reg [8:0] cardselect;
+    wire [8:0] p1_card, p2_card;
+    wire [3:0] p1_handcard, p2_handcard;
     assign p1_handcard_isblack = p1_handcard[0];
     assign p2_handcard_isblack = p2_handcard[0];
 
@@ -91,16 +94,13 @@ module baw_main(
     // reg [8:0] p1_card, p2_card;
     // reg [3:0] p1_handcard, p2_handcard;
     
-    wire [8:0] cardselect;
-    wire [8:0] p1_card, p2_card;
-    wire [3:0] p1_handcard, p2_handcard;
 
     handout p1(cardselect, handout_p1_pulse, resetn, p1_handcard, p1_card);
     handout p2(cardselect, handout_p2_pulse, resetn, p2_handcard, p2_card);
     handcard handcard1(handcard_input, handout_p1_pulse, resetn, p1_handcard);
-    card card1(cardselect, handout_p1_pulse, reset_n, p1_card);
+    card card1(cardselect, handout_p1_pulse, resetn, p1_card);
     handcard handcard2(handcard_input, handout_p2_pulse, resetn, p2_handcard);
-    card card2(cardselect, handout_p2_pulse, reset_n, p2_card);
+    card card2(cardselect, handout_p2_pulse, resetn, p2_card);
 
     wire [8:0] p1_card_;
     assign p1_card_[0] = p1_card[0] & ~cardselect[0];
@@ -163,8 +163,6 @@ module baw_main(
             init: begin // init state
                 if(btnCenter) begin
                     state <= rasp;
-                    p1_card <= 9'b111111111;
-                    p2_card <= 9'b111111111;
                 end
             end
             rasp: begin // Round and Score print state
