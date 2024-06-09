@@ -40,6 +40,8 @@ module baw_main_tb;
     assign resetn=uut.score.resetn;
     assign p1_handcard=uut.comparator.p1_handcard;
     assign p2_handcard=uut.comparator.p2_handcard;
+    assign state
+    assign scoreupdate
 
     
     initial begin
