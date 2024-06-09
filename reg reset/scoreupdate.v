@@ -1,19 +1,11 @@
-// ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ï¿?? matchresult?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ï¿??
-// round counter, win counter, lose counter ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½
-
-// Lab6?ï¿½ï¿½ counter ëª¨ë“ˆ ?ï¿½ï¿½ï¿??
-
-// round?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ ?ï¿½ï¿½?ï¿½ï¿½?ï¿½ï¿½ë§ˆë‹¤ 1 ì¶”ï¿½?
-// p1 ?ï¿½ï¿½?ï¿½ï¿½ï¿?? win counter 1 ì¶”ï¿½?
-// p2 ?ï¿½ï¿½?ï¿½ï¿½ï¿?? lose counter 1 ì¶”ï¿½?
-
 module scoreupdate(
     input [1:0] matchresult,
     input clk,
-    input resetn,
+    input reg resetn,
     output [3:0] round,
     output [3:0] win,
     output [3:0] lose
+    output reg resetn
 );
     wire win_clk, lose_clk;
 
@@ -23,7 +15,7 @@ module scoreupdate(
     counter round2(clk, resetn, round);
     counter win2(win_clk, resetn, win);
     counter lose2(lose_clk, resetn, lose);
-
+    resetn<=0;
 endmodule
 
 
